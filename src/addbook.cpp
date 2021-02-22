@@ -18,6 +18,8 @@ void addBook(int &recordCount, BookData books[]) {
     float  tmpRetail    = 0.0f;
 
     do {
+        if (recordCount >= DBSIZE)
+            return;
         system("clear");
         cout << "---------------------------------------------------------------------------" << endl;
         cout << "|                         Serendipity Booksellers                         |" << endl;

@@ -4,7 +4,7 @@
 using namespace std;
 struct BookData {
     string bookTitle;
-    string isbn;     
+    string isbn;
     string author;  
     string publisher;
     string dateAdded;
