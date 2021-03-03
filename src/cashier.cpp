@@ -19,11 +19,11 @@ const int wQty = 6, wIsbn = 17, wTitle = 25, wPrice = 18, wTotal = 18, spacing =
 // Function: cashier - display process a transaction
 // pre-condition: navigated to from mainmenu
 // post-condition: output transaction information.
-void cashier(const int recordCount, const BookData books[]) {
+void cashier(bookType books[]) {
      const float TAX_RATE = 0.06;
      bool exitmenu = false;
 
-     if (recordCount <= 0) {
+     if (bookType::getBookCount() <= 0) {
           system("clear");
           cout << "There are no records in the database to buy from." << endl;
           pause();
@@ -38,7 +38,7 @@ void cashier(const int recordCount, const BookData books[]) {
 
           char choice;
           
-          buyIndex = lookupBook(recordCount, books);
+          buyIndex = lookupBook(books);
           if (buyIndex == -1)  {
                cout << "Couldn't find that item. Try again." << endl;
                pause();
@@ -53,9 +53,9 @@ void cashier(const int recordCount, const BookData books[]) {
           
           //output formatted:
           cout << "\nSerendipity Book Sellers\n\n";
-          cout << "Date: " << books[buyIndex].dateAdded << "\n\n";
+          cout << "Date: " << books[buyIndex].getDateAdded() << "\n\n";
 
-          subtotal = books[buyIndex].qtyOnHand*books[buyIndex].wholesale;
+          subtotal = books[buyIndex].getQty()*books[buyIndex].getWholesale();
           system("clear");
           
           //output transaction table:
@@ -65,10 +65,10 @@ void cashier(const int recordCount, const BookData books[]) {
           
           cout << setfill('-') << setw(wQty+wIsbn+wTitle+wPrice+wTotal) << '\n';
           cout << setfill(' ') << '\n';
-          cout << left << setw(wQty) << books[buyIndex].qtyOnHand << left << setw(wIsbn) << books[buyIndex].isbn 
-               << left << setw(wTitle) << books[buyIndex].bookTitle.substr(0,wTitle-1) << left << setw(2) 
+          cout << left << setw(wQty) << books[buyIndex].getQty() << left << setw(wIsbn) << books[buyIndex].getIsbn() 
+               << left << setw(wTitle) << books[buyIndex].getTitle().substr(0,wTitle-1) << left << setw(2) 
                << "$ " << setw(wPrice-2) << fixed << setprecision(2) 
-               << books[buyIndex].wholesale << left << setw(2) << "$ "<< left << setw(wTotal) 
+               << books[buyIndex].getWholesale() << left << setw(2) << "$ "<< left << setw(wTotal) 
                << fixed << setprecision(2) << subtotal;
 
           sales = TAX_RATE*subtotal;

@@ -15,10 +15,8 @@
 #include <iostream>
 #include <string>
 
-int main() 
-{
-    int recordCount = 0;
-    BookData books[DBSIZE];
+int main() {
+    bookType books[DBSIZE];
 
     char choice;
     bool exitmenu = false;
@@ -39,10 +37,10 @@ int main()
         cin >> choice;
         switch (choice) {
             case '1':
-                cashier(recordCount, books);
+                cashier(books);
                 break;
             case '2':
-                invmenu(recordCount, books);
+                invmenu(books);
                 break;
             case '3':
                 reports();

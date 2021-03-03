@@ -3,7 +3,7 @@
 // Function: bookInfo - sets up a prompt to allow the user to add a record to the database
 // pre-condigion: navigated to from invmenu, all appropriate parallel arrays declared and passed from main.
 // post-condition: records added to data base.
-void addBook(int &recordCount, BookData books[]) {
+void addBook(bookType books[]) {
     char choice;
     bool exitmenu = false;
     bool savedWork = true;
@@ -18,14 +18,14 @@ void addBook(int &recordCount, BookData books[]) {
     float  tmpRetail    = 0.0f;
 
     do {
-        if (recordCount >= DBSIZE)
+        if (bookType::getBookCount() >= DBSIZE)
             return;
         system("clear");
         cout << "---------------------------------------------------------------------------" << endl;
         cout << "|                         Serendipity Booksellers                         |" << endl;
         cout << "|                                 Add Book                                |" << endl;
         cout << "|                                                                         |" << endl;
-        cout << "|                Database Size: " << DBSIZE << "  Current Record Count: " << setw(16) << left << recordCount << "|" << endl;
+        cout << "|                Database Size: " << DBSIZE << "  Current Record Count: " << setw(16) << left << bookType::getBookCount() << "|" << endl;
         cout << "|                                                                         |" << endl;
         cout << "| [1] Enter Book Title              ->  " << setw(34) << left << tmpTitle.substr(0, 34) << "|" << endl;
         cout << "| [2] Enter ISBN                    ->  " << setw(34) << left << tmpIsbn.substr(0, 34) << "|" << endl;
@@ -92,22 +92,23 @@ void addBook(int &recordCount, BookData books[]) {
                 cin >> tmpRetail;
                 break;
             case '9': // save to database
-                if (recordCount == DBSIZE) {
+                if (bookType::getBookCount() == DBSIZE) {
                     cout << "Database is full, you must delete a record if you would like to add a record." << endl;
                     pause();
                     break;
                 }
-                setTitle(books[recordCount], tmpTitle);
-                setISBN(books[recordCount], tmpIsbn);
-                setAuthor(books[recordCount], tmpAuthor);
-                setPub(books[recordCount], tmpPublisher);
-                setDateAdded(books[recordCount], tmpDate);
-                setQty(books[recordCount], tmpQty);
-                setWholesale(books[recordCount], tmpWholesale);
-                setRetail(books[recordCount], tmpRetail);
+                books[bookType::getBookCount()].setTitle(tmpTitle);
+                books[bookType::getBookCount()].setISBN(tmpIsbn);
+                books[bookType::getBookCount()].setAuthor(tmpAuthor);
+                books[bookType::getBookCount()].setPublisher(tmpPublisher);
+                books[bookType::getBookCount()].setDate(tmpDate);
+                books[bookType::getBookCount()].setQty(tmpQty);
+                books[bookType::getBookCount()].setWholesale(tmpWholesale);
+                books[bookType::getBookCount()].setRetail(tmpRetail);
 
-                recordCount++;
+                bookType::incBookCount();
                 savedWork = true;
+                
                 tmpIsbn      = "*EMPTY*";
                 tmpTitle     = "*EMPTY*";
                 tmpAuthor    = "*EMPTY*";

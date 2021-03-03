@@ -12,24 +12,13 @@
 
 #include "../include/Serendipity.h"
 
-void listall(const int recordCount, const BookData books[]) {
-    int i;
-    for (i = 0; i < recordCount; i++) {
-        cout << i << endl;
-        bookInfo(books[i]);
-        cout << endl;
-    }
-    cin.ignore();
-    cin.get();
-}
-
 // Function: lookupBook - allow the user to search through the database according to publisher, author, or title
 // pre-condition: navigated to from invmenu, at least 1 record added, all parallel arrays are stored correctly and passed
 // post-condition: bookinfo called on the search results.
-int lookupBook(const int recordCount, const BookData books[]) {
+int lookupBook(const bookType books[]) {
     string searchTerm;
     int i;
-    if (recordCount == 0)
+    if (bookType::getBookCount() == 0)
         return -1;
 
     system("clear");
@@ -37,17 +26,21 @@ int lookupBook(const int recordCount, const BookData books[]) {
     cout << "|           Serendipity Booksellers         |" << endl;
     cout << "|                Look Up Book               |" << endl;
     cout << "|                                           |" << endl;
-    cout << "| There are " << setw(2)  << left << recordCount << " records available to search. |" << endl;
+    cout << "| There are " << setw(2)  << left << bookType::getBookCount() << " records available to search. |" << endl;
     cout << "---------------------------------------------" << endl << endl;
     cout << "Search: ";
     cin.ignore();
     getline(cin, searchTerm);
     // perform the search:
-    for (i = 0; i < recordCount; i++) {
-        if (searchInsensitive(books[i].bookTitle, searchTerm) || searchInsensitive(books[i].author, searchTerm) || searchInsensitive(books[i].publisher, searchTerm)) { // if the title contains the substring searchTerm (case insensitive)
+    for (i = 0; i < bookType::getBookCount(); i++) {
+        if (
+            searchInsensitive(books[i].getTitle(), searchTerm) || 
+            searchInsensitive(books[i].getAuthor(), searchTerm) || 
+            searchInsensitive(books[i].getPublisher(), searchTerm)
+        ) { // if the title contains the substring searchTerm (case insensitive)
             char choice;            
             system("clear");
-            bookInfo(books[i]);
+            books[i].print();
             cout << "\nSelect this item? (y/n): ";
             cin >> choice;
             if (tolower(choice) == 'y')
@@ -57,8 +50,8 @@ int lookupBook(const int recordCount, const BookData books[]) {
     return -1;
 }
 
-void deleteBook(int &recordCount, BookData books[]) {
-    int deleteIndex = lookupBook(recordCount, books);
+void deleteBook(bookType books[]) {
+    int deleteIndex = lookupBook(books);
     char choice;
     if (deleteIndex == -1)  {
         cout << "Couldn't find that item. Try again." << endl;
@@ -71,15 +64,15 @@ void deleteBook(int &recordCount, BookData books[]) {
     cout << "WARNING: You are about to delete a record, are you sure you want to do that? (y/n): ";
     cin >> choice;
     if (tolower(choice) == 'y') {
-        books[deleteIndex] = books[recordCount-1];
-        recordCount--;
+        books[deleteIndex] = books[bookType::getBookCount()-1];
+        bookType::decBookCount();
     }
 }
 
 // Function: invmenu - allow the user to use submomdules related to inventory
 // pre-condition: navigated to from mainmenu.
 // post-condition: navigation to a submenu.
-void invmenu(int &recordCount, BookData books[]) {
+void invmenu(bookType books[]) {
     char choice;
     bool exitmenu = false;
     int recordIndex;
@@ -100,8 +93,8 @@ void invmenu(int &recordCount, BookData books[]) {
         cin >> choice;
         switch (choice) {
             case '1':
-                if (recordCount > 0) {
-                    recordIndex = lookupBook(recordCount, books);
+                if (bookType::getBookCount() > 0) {
+                    recordIndex = lookupBook(books);
                     if (recordIndex == -1) {
                         system("clear");
                         cout << "Record not found." << endl;
@@ -115,8 +108,8 @@ void invmenu(int &recordCount, BookData books[]) {
                 }
                 break;
             case '2':
-                if (recordCount < DBSIZE) 
-                    addBook(recordCount, books);
+                if (bookType::getBookCount() < DBSIZE) 
+                    addBook(books);
                 else {
                     system("clear");
                     cout << "Database is full, cannot add any more books." << endl;
@@ -124,8 +117,8 @@ void invmenu(int &recordCount, BookData books[]) {
                 }
                 break;
             case '3':
-                if (recordCount > 0)
-                    editBook(recordCount, books);
+                if (bookType::getBookCount() > 0)
+                    editBook(books);
                 else {
                     system("clear");
                     cout << "Database is empty, cannot edit any records." << endl;
@@ -133,8 +126,8 @@ void invmenu(int &recordCount, BookData books[]) {
                 }
                 break;
              case '4':
-                if (recordCount > 0)
-                    deleteBook(recordCount, books);
+                if (bookType::getBookCount() > 0)
+                    deleteBook(books);
                 else {
                     system("clear");
                     cout << "Database is empty, cannot delete any records." << endl;
@@ -143,9 +136,6 @@ void invmenu(int &recordCount, BookData books[]) {
                 break;
              case '5':
                 exitmenu = true;
-                break;
-            case '6':
-                listall(recordCount, books);
                 break;
             default:
                 cout << "\nPlease enter a number in the range of 1-5." << endl;
