@@ -21,7 +21,7 @@ bool searchInsensitive(const string& src, const string& substr) {
 }
 
 void pause()  {
-    cout << "Press any key to continue...";
+    cout << "Press enter to continue...";
     cin.ignore();
     cin.get();
 }

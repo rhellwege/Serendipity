@@ -80,13 +80,16 @@ void bookType::setDate(const string& _date) {
     dateAdded = _date;
 }
 void bookType::setQty(int _qty) {
-    qtyOnHand = _qty;
+    if (_qty >= 0)
+        qtyOnHand = _qty;
 }
 void bookType::setWholesale(float _wholesale) {
-    wholesale = _wholesale;
+    if (_wholesale >= 0)
+        wholesale = _wholesale;
 }
 void bookType::setRetail(float _retail) {
-    retail = _retail;
+    if (_retail >= 0)
+        retail = _retail;
 }
 // additional functionality:
 void bookType::print() const {
