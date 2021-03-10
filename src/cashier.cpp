@@ -2,14 +2,16 @@
 // Name: Ryan Hellwege
 // Date: 27 Jan, 2021
 // Professor: Jeff Barnett
-// Assignment A(1)
+// Assignment A(11)
 // File Name: cashier.cpp
 // ------------------------------------------------
 // Algorithim:
-// Step 1: prompt the user for input
-// Step 2: calculate taxes and the sale
-// Step 3: output formatted.
-// Step 4: ask the user if they want to repeat.
+// Step 1: ask the user for a book
+// Step 2: ask the user for number of books to buy
+// Step 3: ask the user to repeat
+// STep 4: when done adding, store quantity of books to buy in a shopping cart
+// Step 5: display the purchase
+// Step 6: if the purchase is confirmed, update qty's
 // =================================================
 
 #include "../include/Serendipity.h"
