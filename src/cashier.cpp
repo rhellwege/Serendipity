@@ -9,7 +9,7 @@
 // Step 1: ask the user for a book
 // Step 2: ask the user for number of books to buy
 // Step 3: ask the user to repeat
-// STep 4: when done adding, store quantity of books to buy in a shopping cart
+// Step 4: when done adding, store quantity of books to buy in a shopping cart
 // Step 5: display the purchase
 // Step 6: if the purchase is confirmed, update qty's
 // =================================================
@@ -54,10 +54,10 @@ void cashier(bookType books[]) {
           buyIndex = lookupBook(books);
           while (buyIndex == -1)  { // keep resetting until the book is found, or the user decides to exit.
                system("clear");
-               cout << "Couldn't find that item. Try again." << endl;
-               cout << "exit? (y/n): ";
+               cout << "Couldn't find that item." << endl;
+               cout << "Try again? (y/n): ";
                cin >> choice;
-               if (tolower(choice) == 'y') return; // the user wants to exit, so return to parent menu.
+               if (tolower(choice) == 'n') return; // the user wants to exit, so return to parent menu.
                buyIndex = lookupBook(books);
           }
           system("clear");
@@ -85,7 +85,7 @@ void cashier(bookType books[]) {
      } while(addMore);
      
      system("clear");
-     //Heading:
+     //Order Summary
      cout << "-------------------------------------------" << endl;
      cout << "|          Serendipity Booksellers        |" << endl;
      cout << "|              Cashier Module             |" << endl;
@@ -108,11 +108,14 @@ void cashier(bookType books[]) {
           subtotal = (float)shoppingCart[i] *(float)books[i].getRetail();
      
           //output transaction table:
-          cout << left << setw(wQty) << shoppingCart[i] << left << setw(wIsbn) << books[i].getIsbn() 
-               << left << setw(wTitle) << books[i].getTitle().substr(0,wTitle-1) << left << setw(2) 
-               << "$ " << setw(wPrice-2) << fixed << setprecision(2) 
-               << books[i].getRetail() << left << setw(2) << "$ "<< left << setw(wTotal) 
-               << fixed << setprecision(2) << subtotal;
+          cout << left << setw(wQty) << shoppingCart[i] 
+               << left << setw(wIsbn) << books[i].getIsbn() 
+               << left << setw(wTitle) << books[i].getTitle().substr(0,wTitle-5) 
+               << left << setw(2) << "$ " 
+               << setw(wPrice-2) << fixed << setprecision(2) << setw(6) << right << books[i].getRetail() 
+               << setw(11) << " "
+               << left << setw(2) << "$ "
+               << fixed << setprecision(2) << setw(6) << right << subtotal;
 
           sales = TAX_RATE*subtotal;
           cout << endl;
@@ -121,12 +124,13 @@ void cashier(bookType books[]) {
      }
      sales = grandTotal * TAX_RATE;
      cout << endl;
+
      cout << left << setw(35) << ' ' << setw(15) << "Subtotal" << setw(spacing) 
-               << ' ' << setw(2) << "$ " << right << setw(5) << grandTotal << endl;
-          cout << left << setw(35) << ' ' << setw(15) << "Tax"<< setw(spacing) 
-               << ' ' << setw(2) << "$ " << right << setw(5) << sales << endl;
-          cout << left << setw(35) << ' ' << setw(15) << "Total"<< setw(spacing) 
-               << ' ' << setw(2) << "$ " << right << setw(5) << grandTotal + sales << endl;
+          << ' ' << setw(2) << "$ " << right << setw(6) << grandTotal << endl;
+     cout << left << setw(35) << ' ' << setw(15) << "Tax"<< setw(spacing) 
+          << ' ' << setw(2) << "$ " << right << setw(6) << sales << endl;
+     cout << left << setw(35) << ' ' << setw(15) << "Total"<< setw(spacing) 
+          << ' ' << setw(2) << "$ " << right << setw(6) << grandTotal + sales << endl;
      
      cout << endl << endl;
      cout << "Thank You for Shopping at Serendipity!\n\n";
