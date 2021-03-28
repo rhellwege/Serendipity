@@ -111,7 +111,6 @@ void bookType::print() const {
 
 bool bookType::equals(const bookType& other) const {
     bool result = false;
-
     if (getTitle().compare(other.getTitle()) == 0)
         if (getIsbn().compare(other.getIsbn()) == 0)
             if (getAuthor().compare(other.getAuthor()) == 0)

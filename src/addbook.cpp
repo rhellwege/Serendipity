@@ -3,7 +3,7 @@
 // Function: bookInfo - sets up a prompt to allow the user to add a record to the database
 // pre-condigion: navigated to from invmenu, all appropriate parallel arrays declared and passed from main.
 // post-condition: records added to data base.
-void addBook(bookType books[]) {
+void addBook(bookType* books[]) {
     char choice;
     bool exitmenu = false;
     bool savedWork = true;
@@ -97,14 +97,12 @@ void addBook(bookType books[]) {
                     pause();
                     break;
                 }
-                books[bookType::getBookCount()].setTitle(tmpTitle);
-                books[bookType::getBookCount()].setISBN(tmpIsbn);
-                books[bookType::getBookCount()].setAuthor(tmpAuthor);
-                books[bookType::getBookCount()].setPublisher(tmpPublisher);
-                books[bookType::getBookCount()].setDate(tmpDate);
-                books[bookType::getBookCount()].setQty(tmpQty);
-                books[bookType::getBookCount()].setWholesale(tmpWholesale);
-                books[bookType::getBookCount()].setRetail(tmpRetail);
+    
+                books[bookType::getBookCount()] = new bookType( // initiate the class with a default constructor
+                    tmpTitle, tmpIsbn, tmpAuthor, 
+                    tmpPublisher, tmpDate, tmpQty, 
+                    tmpWholesale, tmpRetail
+                ); 
 
                 bookType::incBookCount();
                 savedWork = true;

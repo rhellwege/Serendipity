@@ -15,13 +15,13 @@
 // =================================================
 
 #include "../include/Serendipity.h"
-
+#include <ctime>
 const int wQty = 6, wIsbn = 14, wTitle = 27, wPrice = 19, wTotal = 18, spacing = 16;
 
 // Function: cashier - display process a transaction
 // pre-condition: navigated to from mainmenu
 // post-condition: output transaction information.
-void cashier(bookType books[]) {
+void cashier(bookType* books[]) {
      const float TAX_RATE = 0.06;
      bool confirmPurchase = false;
 
@@ -39,11 +39,11 @@ void cashier(bookType books[]) {
      float sales = 0.0f;
      char choice;
      int qtyToPurchase = 0;
-     int shoppingCart[DBSIZE];
+     int shoppingCart[bookType::getBookCount()];
      float grandTotal = 0.0f;
      float grandTaxes = 0.0f;
 
-     for (int i = 0; i < DBSIZE; i++) {
+     for (int i = 0; i < bookType::getBookCount(); i++) {
           shoppingCart[i] = 0; // make sure this array is set to zero so garbage isnt added
      }
 
@@ -62,17 +62,25 @@ void cashier(bookType books[]) {
           }
           system("clear");
 
-          do {
-               cout << "How many orders of " << books[buyIndex].getTitle() 
-               << " would you like to buy (" 
-               << books[buyIndex].getQty()<< " books on hand): ";
+          do { // buy prompt
+               cout << "How many orders of " << books[buyIndex]->getTitle() <<endl
+               << "would you like to buy (" 
+               << books[buyIndex]->getQty()<< " books on hand, " <<  shoppingCart[buyIndex] << " in shopping cart): ";
                cin >> qtyToPurchase;
-               if (qtyToPurchase > books[buyIndex].getQty()) {
-                    cout << "You cannot buy more than " << books[buyIndex].getQty() << " orders of that book, try again." << endl;
+               if (qtyToPurchase < 0) {
+                    cout << "You cannot buy negative books, try again." << endl;
+                    qtyToPurchase = 0;
+                    pause();
+                    system("clear");
+                    continue;
+               }
+               if (qtyToPurchase + shoppingCart[buyIndex] > books[buyIndex]->getQty()) {
+                    cout << "You cannot buy more than " << books[buyIndex]->getQty() << " orders of that book, try again." << endl;
+                    qtyToPurchase = 0;
                     pause();
                     system("clear");
                }
-          } while (qtyToPurchase > books[buyIndex].getQty() || qtyToPurchase < 0);
+          } while (qtyToPurchase > books[buyIndex]->getQty() || qtyToPurchase < 0);
 
           shoppingCart[buyIndex] += qtyToPurchase; // add however many items the user requested to the shopping cart
           system("clear");
@@ -94,25 +102,32 @@ void cashier(bookType books[]) {
      
      //output formatted:
      cout << "\nSerendipity Book Sellers\n\n";
-     //cout << "Date: " << books[buyIndex].getDateAdded() << "\n\n";
+
+     time_t tim; // current date/time
+     struct tm* ti;
+     time(&tim);
+     ti = localtime(&tim);
+
+     cout << "Date: " << asctime(ti) << endl << endl;
+
      cout << left << setw(wQty) << "Qty" << left << setw(wIsbn) << "ISBN" // table heading
           << left << setw(wTitle) << "Title" << left << setw(wPrice) 
           << "Price Per Item" << left << setw(wTotal) << "Total";
      cout << setfill('-') << setw(wQty+wIsbn+wTitle+wPrice+wTotal) << '\n';
      cout << setfill(' ') << '\n';
 
-     for (int i = 0; i < DBSIZE; i++) { //iterate through the shopping cart
+     for (int i = 0; i < bookType::getBookCount(); i++) { //iterate through the shopping cart
           if (shoppingCart[i] == 0) // user did not purchase this book, don't care about printing
                continue;
           
-          subtotal = (float)shoppingCart[i] *(float)books[i].getRetail();
+          subtotal = (float)shoppingCart[i] *(float)books[i]->getRetail();
      
           //output transaction table:
           cout << left << setw(wQty) << shoppingCart[i] 
-               << left << setw(wIsbn) << books[i].getIsbn() 
-               << left << setw(wTitle) << books[i].getTitle().substr(0,wTitle-5) 
+               << left << setw(wIsbn) << books[i]->getIsbn() 
+               << left << setw(wTitle) << books[i]->getTitle().substr(0,wTitle-5) 
                << left << setw(2) << "$ " 
-               << setw(wPrice-2) << fixed << setprecision(2) << setw(6) << right << books[i].getRetail() 
+               << setw(wPrice-2) << fixed << setprecision(2) << setw(6) << right << books[i]->getRetail() 
                << setw(11) << " "
                << left << setw(2) << "$ "
                << fixed << setprecision(2) << setw(6) << right << subtotal;
@@ -142,8 +157,8 @@ void cashier(bookType books[]) {
           confirmPurchase = true;
 
      if (confirmPurchase) { // decrease the quantities of the books we just bought if the user confirmed the purchase
-          for (int i = 0; i < DBSIZE; i++) {
-               books[i].setQty(books[i].getQty() - shoppingCart[i]);
+          for (int i = 0; i < bookType::getBookCount(); i++) {
+               books[i]->setQty(books[i]->getQty() - shoppingCart[i]);
           }
      }
 }

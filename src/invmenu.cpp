@@ -15,7 +15,7 @@
 // Function: lookupBook - allow the user to search through the database according to publisher, author, or title
 // pre-condition: navigated to from invmenu, at least 1 record added, all parallel arrays are stored correctly and passed
 // post-condition: bookinfo called on the search results.
-int lookupBook(const bookType books[]) {
+int lookupBook(bookType* books[]) {
     string searchTerm;
     int i;
     if (bookType::getBookCount() == 0)
@@ -34,13 +34,13 @@ int lookupBook(const bookType books[]) {
     // perform the search:
     for (i = 0; i < bookType::getBookCount(); i++) {
         if (
-            searchInsensitive(books[i].getTitle(), searchTerm) || 
-            searchInsensitive(books[i].getAuthor(), searchTerm) || 
-            searchInsensitive(books[i].getPublisher(), searchTerm)
+            searchInsensitive(books[i]->getTitle(), searchTerm) || 
+            searchInsensitive(books[i]->getAuthor(), searchTerm) || 
+            searchInsensitive(books[i]->getPublisher(), searchTerm)
         ) { // if the title contains the substring searchTerm (case insensitive)
             char choice;            
             system("clear");
-            books[i].print();
+            books[i]->print();
             cout << "\nSelect this item? (y/n): ";
             cin >> choice;
             if (tolower(choice) == 'y')
@@ -50,7 +50,7 @@ int lookupBook(const bookType books[]) {
     return -1;
 }
 
-void deleteBook(bookType books[]) {
+void deleteBook(bookType* books[]) {
     int deleteIndex = lookupBook(books);
     char choice;
     if (deleteIndex == -1)  {
@@ -63,8 +63,9 @@ void deleteBook(bookType books[]) {
     // swap with last element
     cout << "WARNING: You are about to delete a record, are you sure you want to do that? (y/n): ";
     cin >> choice;
-    if (tolower(choice) == 'y') {
-        books[deleteIndex] = books[bookType::getBookCount()-1];
+    if (tolower(choice) == 'y') { // if confirmed
+        delete books[deleteIndex]; // set the book pointer to zero, and free memory
+        books[deleteIndex] = books[bookType::getBookCount()-1]; // switch the last book that was added with what we are deleting, and make that spot inaccessable
         bookType::decBookCount();
     }
 }
@@ -72,7 +73,7 @@ void deleteBook(bookType books[]) {
 // Function: invmenu - allow the user to use submomdules related to inventory
 // pre-condition: navigated to from mainmenu.
 // post-condition: navigation to a submenu.
-void invmenu(bookType books[]) {
+void invmenu(bookType* books[]) {
     char choice;
     bool exitmenu = false;
     int recordIndex;

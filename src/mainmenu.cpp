@@ -16,7 +16,7 @@
 #include <string>
 
 int main() {
-    bookType books[DBSIZE];
+    bookType* books[DBSIZE];
 
     char choice;
     bool exitmenu = false;
@@ -43,7 +43,7 @@ int main() {
                 invmenu(books);
                 break;
             case '3':
-                reports();
+                reports(books);
                 break;
             case '4':
                 exit(0);

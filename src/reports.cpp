@@ -13,27 +13,27 @@
 #include "../include/Serendipity.h"
 
 // stub functions:
-void repListing() {
+void repListing(bookType* books[]) {
     cout << "You chose Inventory Listing."<< endl;
     pause();
 }
-void repWholesale() {
+void repWholesale(bookType* books[]) {
     cout << "You chose Wholesale value."<< endl;
     pause();
 }
-void repRetail() {
+void repRetail(bookType* books[]) {
     cout << "You chose retail."<< endl;
     pause();
 }
-void repCost() {
+void repCost(bookType* books[]) {
     cout << "You chose cost."<< endl;
     pause();
 } 
-void repQty() {
+void repQty(bookType* books[]) {
     cout << "You chose quantity."<< endl;
     pause();
 }
-void repAge() {
+void repAge(bookType* books[]) {
     cout << "You chose age."<< endl;
     pause();
 }
@@ -41,7 +41,7 @@ void repAge() {
 // Function: reports - allows the user to choose a function to display reports
 // pre-condition: navigated to from mainmenu.
 // post-condition: navigation.
-void reports() 
+void reports(bookType* books[]) 
 {
     char choice;
     bool exitmenu = false;
@@ -65,22 +65,22 @@ void reports()
         cin >> choice;
         switch (choice) {
             case '1':
-                repListing();
+                repListing(books);
                 break;
             case '2':
-                repWholesale();
+                repWholesale(books);
                 break;
             case '3':
-                repRetail();
+                repRetail(books);
                 break;
             case '4':
-                repQty();
+                repQty(books);
                 break;
             case '5':
-                repCost();
+                repCost(books);
                 break;
             case '6':
-                repAge();
+                repAge(books);
                 break;
             case '7':
                 exitmenu = true;

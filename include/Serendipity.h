@@ -10,23 +10,23 @@ using namespace std;
 const int DBSIZE = 20;
 
 // cashier
-void cashier(bookType books[]);
+void cashier(bookType* books[]);
 
 // invmenu:
-void invmenu(bookType books[]);
-int lookupBook(const bookType books[]);
-void addBook(bookType books[]);
-void editBook(bookType books[]);
-void deleteBook(bookType books[]);
+void invmenu(bookType* books[]);
+int lookupBook(bookType* books[]);
+void addBook(bookType* books[]);
+void editBook(bookType* books[]);
+void deleteBook(bookType* books[]);
 
 // reports:
-void reports();
-void repListing();
-void repWholesale(); 
-void repRetail(); 
-void repCost(); 
-void repQty(); 
-void repAge(); 
+void reports(bookType* books[]);
+void repListing(bookType* books[]);
+void repWholesale(bookType* books[]); 
+void repRetail(bookType* books[]); 
+void repCost(bookType* books[]); 
+void repQty(bookType* books[]); 
+void repAge(bookType* books[]); 
 
 // utils:
 void pause();
