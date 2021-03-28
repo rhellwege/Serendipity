@@ -33,6 +33,8 @@ void repAge(bookType* books[]);
 
 // utils:
 void pause();
+void ruler();
 bool searchInsensitive(const string& src, const string& substr);
 bool key_is_pressed(KeySym ks);
+char* get_date();
 #endif

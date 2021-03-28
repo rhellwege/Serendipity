@@ -103,12 +103,7 @@ void cashier(bookType* books[]) {
      //output formatted:
      cout << "\nSerendipity Book Sellers\n\n";
 
-     time_t tim; // current date/time
-     struct tm* ti;
-     time(&tim);
-     ti = localtime(&tim);
-
-     cout << "Date: " << asctime(ti) << endl << endl;
+     cout << "Date: " << get_date() << endl << endl;
 
      cout << left << setw(wQty) << "Qty" << left << setw(wIsbn) << "ISBN" // table heading
           << left << setw(wTitle) << "Title" << left << setw(wPrice) 

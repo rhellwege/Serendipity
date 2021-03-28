@@ -14,16 +14,25 @@
 
 const int RESULTS_PER_PAGE = 10;
 
+// formatting widths
+const int wListing = 10, wQty = 5;
+
 // stub functions:
 void repListing(bookType* books[]) {
-    int i = 0;
-    while (i < 20000) {
-        cout << i << endl;
-        i++;
-        if (key_is_pressed(XK_Q)) {
-            exit(0);
-        }
-    }
+    int page = 1;
+    int maxPages = DBSIZE / RESULTS_PER_PAGE;
+
+    system("clear");
+    ruler();
+    /*
+             0         1         2         3         4         5         6         7         
+             01234567890123456789012345678901234567890123456789012345678901234567890123456789*/
+    cout << "*********************************************************************************" << endl;
+    cout << "*                           SERENDIPITY BOOKSELLERS                             *" << endl;
+    cout << "*                                REPORT LISTING                                 *" << endl;
+    cout << "* DATE: " << get_date() << " PAGE: " << page << " of " << maxPages << "  DATABASE SIZE: " << DBSIZE << "  CURRENT BOOK COUNT: " << bookType::getBookCount() << "                                              *" << endl;
+
+    pause();
 }
 void repWholesale(bookType* books[]) {
     cout << "You chose Wholesale value."<< endl;

@@ -1,6 +1,30 @@
 #include "../include/Serendipity.h"
+#include <ctime>
 
+const int COLS = 80;
 
+char* get_date() {
+    time_t tim; // current date/time
+    struct tm* ti;
+    time(&tim);
+    ti = localtime(&tim);
+    return asctime(ti);
+}
+
+void ruler() {
+    // tens
+    for (int i = 0; i < COLS; i++) {
+        if (i % 10 == 0) 
+            cout << i/10;
+        else  
+            cout << ' ';
+    }
+    cout << endl;
+    for (int i = 0; i < COLS; i++) {
+        cout << i % 10;
+    }
+    cout << endl;
+}
 /**
  *
  * @param ks  like XK_Shift_L, see /usr/include/X11/keysymdef.h
