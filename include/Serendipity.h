@@ -5,6 +5,9 @@
 #include <iomanip>
 #include <string>
 
+#include <X11/Xlib.h> // linux keyboard input for reports menu
+#include "X11/keysym.h"
+
 using namespace std;
 
 const int DBSIZE = 20;
@@ -31,4 +34,5 @@ void repAge(bookType* books[]);
 // utils:
 void pause();
 bool searchInsensitive(const string& src, const string& substr);
+bool key_is_pressed(KeySym ks);
 #endif

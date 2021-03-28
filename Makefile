@@ -1,6 +1,6 @@
 IDIR =include/
 CC=g++
-CFLAGS=-I$(IDIR)
+CFLAGS=-I$(IDIR) -lX11
 SRC=src/
 
 ODIR=obj

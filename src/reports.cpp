@@ -12,10 +12,18 @@
 
 #include "../include/Serendipity.h"
 
+const int RESULTS_PER_PAGE = 10;
+
 // stub functions:
 void repListing(bookType* books[]) {
-    cout << "You chose Inventory Listing."<< endl;
-    pause();
+    int i = 0;
+    while (i < 20000) {
+        cout << i << endl;
+        i++;
+        if (key_is_pressed(XK_Q)) {
+            exit(0);
+        }
+    }
 }
 void repWholesale(bookType* books[]) {
     cout << "You chose Wholesale value."<< endl;
