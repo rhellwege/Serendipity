@@ -1,26 +1,25 @@
 #include "../include/Serendipity.h"
 #include <ctime>
 
-const int COLS = 80;
+const int COLS = 120;
 
-char* get_date() {
-    time_t tim; // current date/time
-    struct tm* ti;
-    time(&tim);
-    ti = localtime(&tim);
-    return asctime(ti);
+string get_date() {
+    char buff[30];
+    time_t t = time(0);
+    strftime(buff, 30, "%m/%d/%Y", localtime(&t)); // mm/dd/yy
+    return buff;
 }
 
 void ruler() {
     // tens
-    for (int i = 0; i < COLS; i++) {
+    for (int i = 1; i < COLS; i++) {
         if (i % 10 == 0) 
             cout << i/10;
         else  
             cout << ' ';
     }
     cout << endl;
-    for (int i = 0; i < COLS; i++) {
+    for (int i = 1; i < COLS; i++) {
         cout << i % 10;
     }
     cout << endl;

@@ -23,6 +23,8 @@ void editBook(bookType* books[]);
 void deleteBook(bookType* books[]);
 
 // reports:
+float getRetailSum(bookType* books[]);
+float getWholesaleSum(bookType* books[]);
 void reports(bookType* books[]);
 void repListing(bookType* books[]);
 void repWholesale(bookType* books[]); 
@@ -36,5 +38,5 @@ void pause();
 void ruler();
 bool searchInsensitive(const string& src, const string& substr);
 bool key_is_pressed(KeySym ks);
-char* get_date();
+string get_date();
 #endif
