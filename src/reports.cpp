@@ -13,41 +13,58 @@
 #include "../include/Serendipity.h"
 #include <iomanip>
 
-const int RESULTS_PER_PAGE = 2;
+const int RESULTS_PER_PAGE = 10;
 
 // formatting widths
 const int wTitle = 28, wIsbn = 11, wAuthor = 15, wPublisher = 15, wDate = 11, wQty = 8, wWhole = 15, wRetail = 13;
 const int repTitle = 40;
 const int repSpacing = 12;
 
-// helper function to quickly get the total sum of retail prices
-float getRetailSum(bookType* books[]) {
-    int total = 0;
-    for (int i = 0; i < bookType::getBookCount(); i++) {
-        total += books[i]->getRetail();
-    }
-    return total;
-}
-
-float getWholesale(bookType* books[]) {
-    int total = 0;
-    for (int i = 0; i < bookType::getBookCount(); i++) {
-        total += books[i]->getWholesale();
-    }
-    return total;
+// helper function to make code smaller, changes the page number, or can exit the menu
+void navigation(int maxPages, int& page, bool& exitmenu) {
+    int toPage;
+    char c;
+    bool valid = true;
+    cout << "--------------------------------------------------------------------------------------" << endl;
+    cout << "|  Navigation:  D = Page Down  |  U = Page Up  |  J = Jump to Page  |  Q/Esc = Quit  |" << endl;
+    cout << "--------------------------------------------------------------------------------------" << endl;
+    cin >> c;
+    do {
+        switch (tolower(c)) {
+            case 'q':
+                exitmenu = true;
+                break;
+            case 'd':
+                page++;
+                break;
+            case 'u':
+                page--;
+                break;
+            case 'j':    
+                system("clear");
+                cout << "Jump to page (1-" << maxPages << "): ";
+                cin >> toPage;
+                if (toPage < 1 || toPage > maxPages) {
+                    valid = false;
+                    break;
+                }
+                page = toPage;
+                break;
+        }
+    } while(!valid);
 }
 
 // summary of every listing, displaying every parameter of each book.
 void repListing(bookType* books[]) {
     int page = 1;
-    int maxPages = DBSIZE / RESULTS_PER_PAGE;
+    int maxPages = bookType::getBookCount() / RESULTS_PER_PAGE;
     int i;
     bool exitmenu = false;
     do {
         if (page > maxPages)
             page = 1;
-        if (page < 0)
-            page = maxPages - 1;
+        if (page <= 0)
+            page = maxPages;
         system("clear");
         cout << "************************************************************************************************************************" << endl;
         cout << "*                                               SERENDIPITY BOOKSELLERS                                                *" << endl;
@@ -98,23 +115,24 @@ void repListing(bookType* books[]) {
                  << "  *" << endl;
             cout << "*                                                                                                                      *" << endl;
         }
-        pause();
-        page++;
+        cout << "************************************************************************************************************************" << endl;
+        // handle navigation:
+        navigation(maxPages, page, exitmenu);
     } while (!exitmenu);
 }
 
 // shows summary of each book's title, isbn, qty, and wholesale value
 void repWholesale(bookType* books[]) {
     int page = 1;
-    int maxPages = DBSIZE / RESULTS_PER_PAGE;
+    int maxPages = bookType::getBookCount() / RESULTS_PER_PAGE;
     int i;
     bool exitmenu = false;
     cout << left << fixed << setprecision(2);
     do {
         if (page > maxPages)
             page = 1;
-        if (page < 0)
-            page = maxPages - 1;
+        if (page <= 0)
+            page = maxPages;
         system("clear");
         cout << "************************************************************************************************************************" << endl;
         cout << "*                                               SERENDIPITY BOOKSELLERS                                                *" << endl;
@@ -152,22 +170,30 @@ void repWholesale(bookType* books[]) {
                  << "        *" << endl;
             cout << "*                                                                                                                      *" << endl;
         }
-        pause();
+        // display total:
+        float total = 0;
+        for (int i = 0; i < bookType::getBookCount(); i++) {
+            total += books[i]->getWholesale();
+        }
+        cout << "*                                    Total: " << total << "                                                                  *" << endl;
+        cout << "************************************************************************************************************************" << endl;
+        // handle navigation:
+        navigation(maxPages, page, exitmenu);
     } while(!exitmenu);
 }
 
 // shows summary of each book's title, isbn, qty, and retail value
 void repRetail(bookType* books[]) {
     int page = 1;
-    int maxPages = DBSIZE / RESULTS_PER_PAGE;
+    int maxPages = bookType::getBookCount() / RESULTS_PER_PAGE;
     int i;
     bool exitmenu = false;
     cout << left << fixed << setprecision(2);
     do {
         if (page > maxPages)
-            page = 0;
-        if (page < 0)
-            page = maxPages - 1;
+            page = 1;
+        if (page <= 0)
+            page = maxPages;
         system("clear");
         cout << "************************************************************************************************************************" << endl;
         cout << "*                                               SERENDIPITY BOOKSELLERS                                                *" << endl;
@@ -192,34 +218,28 @@ void repRetail(bookType* books[]) {
              << "          *" << endl;
         cout << setfill(' ');
         // table body
-        for (i = (page-1)*RESULTS_PER_PAGE; i < RESULTS_PER_PAGE; i++) {
+        for (i = 0; i < RESULTS_PER_PAGE; i++) {
             if (i >= bookType::getBookCount())
                 break;
+            int index = i + (page-1)*RESULTS_PER_PAGE;
             cout << "* " << left
-                 << setw(repTitle) << books[i]->getTitle().substr(0, repTitle-1)<< setw(repSpacing) << ' '
-                 << setw(wIsbn) << books[i]->getIsbn()<< setw(repSpacing) << ' '
+                 << setw(repTitle) << books[index]->getTitle().substr(0, repTitle-1)<< setw(repSpacing) << ' '
+                 << setw(wIsbn) << books[index]->getIsbn()<< setw(repSpacing) << ' '
                  << right
-                 << setw(wQty-1) << books[i]->getQty()<< setw(repSpacing) << ' '
-                 << setw(wRetail) << books[i]->getRetail()
+                 << setw(wQty-1) << books[index]->getQty()<< setw(repSpacing) << ' '
+                 << setw(wRetail) << books[index]->getRetail()
                  << "          *" << endl;
             cout << "*                                                                                                                      *" << endl;
         }
-        // handle key presses:
-
-        while (1) {
-            if (key_is_pressed(XK_Page_Down) || key_is_pressed(XK_Down)) {
-                page++;
-                break;
-            }
-            if (key_is_pressed(XK_Page_Up) || key_is_pressed(XK_Up)) {
-                page--;
-                break;
-            }
-            if (key_is_pressed(XK_Escape)) {
-                exitmenu = true;
-                break;
-            }
+        // display total:
+        float total = 0;
+        for (int i = 0; i < bookType::getBookCount(); i++) {
+            total += books[i]->getRetail();
         }
+        cout << "*                                    Total: " << total << "                                                                  *" << endl;
+        cout << "************************************************************************************************************************" << endl;
+        // handle navigation:
+        navigation(maxPages, page, exitmenu);
     } while(!exitmenu);
 }
 
@@ -261,7 +281,6 @@ void reports(bookType* books[])
         cout << "|      7. Return to the Main Menu         |" << endl;
         cout << "-------------------------------------------" << endl << endl;
         cout << "            Enter Your Choice: ";
-
         cin >> choice;
         switch (choice) {
             case '1':

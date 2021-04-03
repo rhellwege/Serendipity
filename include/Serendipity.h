@@ -23,8 +23,6 @@ void editBook(bookType* books[]);
 void deleteBook(bookType* books[]);
 
 // reports:
-float getRetailSum(bookType* books[]);
-float getWholesaleSum(bookType* books[]);
 void reports(bookType* books[]);
 void repListing(bookType* books[]);
 void repWholesale(bookType* books[]); 
