@@ -165,8 +165,10 @@ void repWholesale(bookType* books[]) {
                  << setw(repTitle) << books[index]->getTitle().substr(0, repTitle-1)<< setw(repSpacing) << ' '
                  << setw(wIsbn) << books[index]->getIsbn()<< setw(repSpacing) << ' '
                  << right
-                 << setw(wQty-1) << books[index]->getQty()<< setw(repSpacing) << ' '
-                 << setw(wWhole) << books[index]->getWholesale()
+                 << setw(wQty-1) << books[index]->getQty()<< setw(repSpacing+1) << ' '
+                 << left << "$" << setfill('.') << right
+                 << setw(wWhole-2) << books[index]->getWholesale()
+                 << setfill(' ')
                  << "        *" << endl;
             cout << "*                                                                                                                      *" << endl;
         }
@@ -175,7 +177,10 @@ void repWholesale(bookType* books[]) {
         for (int i = 0; i < bookType::getBookCount(); i++) {
             total += books[i]->getWholesale();
         }
-        cout << "*                                    Total: " << total << "                                                                  *" << endl;
+        //cout << "*                                                                                               Total: " << total << " *" << endl;
+        //cout << "* " << setw((repSpacing*3)+wTitle+wIsbn+wQty-1) << right  << "Total:" << setw(wWhole+repSpacing) << total << "        *" << endl;
+        cout << "* " << setw((repSpacing*3)+wTitle+wIsbn+wQty-1) << right << "Total:" << left
+             << setw(repSpacing+1) << ' ' << "$" << setfill('.') << right << setw(wWhole-2) << total << "        *" << setfill(' ') << endl;
         cout << "************************************************************************************************************************" << endl;
         // handle navigation:
         navigation(maxPages, page, exitmenu);
@@ -226,8 +231,10 @@ void repRetail(bookType* books[]) {
                  << setw(repTitle) << books[index]->getTitle().substr(0, repTitle-1)<< setw(repSpacing) << ' '
                  << setw(wIsbn) << books[index]->getIsbn()<< setw(repSpacing) << ' '
                  << right
-                 << setw(wQty-1) << books[index]->getQty()<< setw(repSpacing) << ' '
-                 << setw(wRetail) << books[index]->getRetail()
+                 << setw(wQty-1) << books[index]->getQty()<< setw(repSpacing+1) << ' '
+                 << left << "$" << setfill('.') << right
+                 << setw(wRetail-2) << books[index]->getRetail()
+                 << setfill(' ')
                  << "          *" << endl;
             cout << "*                                                                                                                      *" << endl;
         }
@@ -236,7 +243,9 @@ void repRetail(bookType* books[]) {
         for (int i = 0; i < bookType::getBookCount(); i++) {
             total += books[i]->getRetail();
         }
-        cout << "*                                    Total: " << total << "                                                                  *" << endl;
+        //cout << "*                                    Total: " << total << "                                                                  *" << endl;
+        cout << "* " << setw((repSpacing*3)+wTitle+wIsbn+wQty-1) << right << "Total:" << left
+             << setw(repSpacing+1) << ' ' << "$" << setfill('.') << right << setw(wRetail-2) << total << "          *" << setfill(' ') << endl;
         cout << "************************************************************************************************************************" << endl;
         // handle navigation:
         navigation(maxPages, page, exitmenu);

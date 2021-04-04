@@ -17,10 +17,8 @@
 
 int main() {
     bookType* books[DBSIZE];
-
     char choice;
     bool exitmenu = false;
-
     do {
         system("clear");
         cout << "-------------------------------------------" << endl;
