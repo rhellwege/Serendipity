@@ -48,7 +48,7 @@ int main() {
                 break;
             default:
                 cout << "\nPlease enter a number in the range 1-4." << endl;
-                pause();
+                wait();
         }
     } while (!exitmenu);
     return 0;

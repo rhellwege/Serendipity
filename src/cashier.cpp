@@ -28,7 +28,7 @@ void cashier(bookType* books[]) {
      if (bookType::getBookCount() <= 0) {
           system("clear");
           cout << "There are no records in the database to buy from." << endl;
-          pause();
+          wait();
           return;
      }
 
@@ -70,14 +70,14 @@ void cashier(bookType* books[]) {
                if (qtyToPurchase < 0) {
                     cout << "You cannot buy negative books, try again." << endl;
                     qtyToPurchase = 0;
-                    pause();
+                    wait();
                     system("clear");
                     continue;
                }
                if (qtyToPurchase + shoppingCart[buyIndex] > books[buyIndex]->getQty()) {
                     cout << "You cannot buy more than " << books[buyIndex]->getQty() << " orders of that book, try again." << endl;
                     qtyToPurchase = 0;
-                    pause();
+                    wait();
                     system("clear");
                }
           } while (qtyToPurchase > books[buyIndex]->getQty() || qtyToPurchase < 0);

@@ -29,7 +29,8 @@ void repQty(bookType* books[]);
 void repAge(bookType* books[]); 
 
 // utils:
-void pause();
+void wait();
+char kbhit();
 void ruler();
 bool searchInsensitive(const string& src, const string& substr);
 string get_date();

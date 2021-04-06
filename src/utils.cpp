@@ -1,8 +1,52 @@
 #include "../include/Serendipity.h"
-#include <X11/Xlib.h>
-#include <ctime>
 
 const int COLS = 120;
+
+#include <termios.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+class BufferToggle
+{
+    private:
+        struct termios t;
+
+    public:
+
+        /*
+         * Disables buffered input
+         */
+
+        void off(void)
+        {
+            tcgetattr(STDIN_FILENO, &t); //get the current terminal I/O structure
+            t.c_lflag &= ~ICANON; //Manipulate the flag bits to do what you want it to do
+            tcsetattr(STDIN_FILENO, TCSANOW, &t); //Apply the new settings
+            
+        }
+
+
+        /*
+         * Enables buffered input
+         */
+
+        void on(void)
+        {
+            tcgetattr(STDIN_FILENO, &t); //get the current terminal I/O structure
+            t.c_lflag |= ICANON; //Manipulate the flag bits to do what you want it to do
+            tcsetattr(STDIN_FILENO, TCSANOW, &t); //Apply the new settings
+        }
+};
+
+BufferToggle bt;
+
+char kbhit() {
+    bt.off();
+    char c = std::getchar();
+    bt.on();
+    return c;
+}
 
 string get_date() {
     char buff[30];
@@ -46,8 +90,8 @@ bool searchInsensitive(const string& src, const string& substr) {
     return false;
 }
 
-void pause()  {
-    cout << "Press enter to continue...";
+void wait()  {
+    cout << "Press return to continue...";
     cin.ignore();
     cin.get();
 }

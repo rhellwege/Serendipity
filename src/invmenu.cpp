@@ -99,13 +99,13 @@ void invmenu(bookType* books[]) {
                     if (recordIndex == -1) {
                         system("clear");
                         cout << "Record not found." << endl;
-                        pause();
+                        wait();
                     }
                 }
                 else {
                     system("clear");
                     cout << "Database is empty, cannot search for records." << endl;
-                    pause();
+                    wait();
                 }
                 break;
             case '2':
@@ -114,7 +114,7 @@ void invmenu(bookType* books[]) {
                 else {
                     system("clear");
                     cout << "Database is full, cannot add any more books." << endl;
-                    pause();
+                    wait();
                 }
                 break;
             case '3':
@@ -123,7 +123,7 @@ void invmenu(bookType* books[]) {
                 else {
                     system("clear");
                     cout << "Database is empty, cannot edit any records." << endl;
-                    pause();
+                    wait();
                 }
                 break;
              case '4':
@@ -132,7 +132,7 @@ void invmenu(bookType* books[]) {
                 else {
                     system("clear");
                     cout << "Database is empty, cannot delete any records." << endl;
-                    pause();
+                    wait();
                 }
                 break;
              case '5':
@@ -140,7 +140,7 @@ void invmenu(bookType* books[]) {
                 break;
             default:
                 cout << "\nPlease enter a number in the range of 1-5." << endl;
-                pause();
+                wait();
         }
     } while (!exitmenu);
 }

@@ -12,7 +12,7 @@ void editBook(bookType* books[]) {
     editIndex = lookupBook(books);
     if (editIndex == -1)  {
         cout << "Couldn't find that item. Try again." << endl;
-        pause();
+        wait();
         return;
     }
 
@@ -92,7 +92,7 @@ void editBook(bookType* books[]) {
                 break;
             default:
                 cout << "\nPlease enter a number in the range 1-9." << endl;
-                pause();
+                wait();
         }
 
     } while (!exitmenu);

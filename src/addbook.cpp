@@ -94,7 +94,7 @@ void addBook(bookType* books[]) {
             case '9': // save to database
                 if (bookType::getBookCount() == DBSIZE) {
                     cout << "Database is full, you must delete a record if you would like to add a record." << endl;
-                    pause();
+                    wait();
                     break;
                 }
     
@@ -128,7 +128,7 @@ void addBook(bookType* books[]) {
                 break;
             default:
                 cout << "\nPlease enter a number in the range 0-9." << endl;
-                pause();
+                wait();
         }
 
     } while (!exitmenu);

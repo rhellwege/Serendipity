@@ -28,7 +28,7 @@ void navigation(int maxPages, int& page, bool& exitmenu) {
     cout << "--------------------------------------------------------------------------------------" << endl;
     cout << "|  Navigation:  D = Page Down  |  U = Page Up  |  J = Jump to Page  |  Q/Esc = Quit  |" << endl;
     cout << "--------------------------------------------------------------------------------------" << endl;
-    cin >> c;
+    c = kbhit();
     do {
         switch (tolower(c)) {
             case 'q':
@@ -175,7 +175,7 @@ void repWholesale(bookType* books[]) {
         // display total:
         float total = 0;
         for (int i = 0; i < bookType::getBookCount(); i++) {
-            total += books[i]->getWholesale();
+            total += books[i]->getWholesale() * books[i]->getQty();
         }
         //cout << "*                                                                                               Total: " << total << " *" << endl;
         //cout << "* " << setw((repSpacing*3)+wTitle+wIsbn+wQty-1) << right  << "Total:" << setw(wWhole+repSpacing) << total << "        *" << endl;
@@ -241,7 +241,7 @@ void repRetail(bookType* books[]) {
         // display total:
         float total = 0;
         for (int i = 0; i < bookType::getBookCount(); i++) {
-            total += books[i]->getRetail();
+            total += books[i]->getRetail() * books[i]->getQty();
         }
         //cout << "*                                    Total: " << total << "                                                                  *" << endl;
         cout << "* " << setw((repSpacing*3)+wTitle+wIsbn+wQty-1) << right << "Total:" << left
@@ -254,17 +254,17 @@ void repRetail(bookType* books[]) {
 
 void repCost(bookType* books[]) {
     cout << "You chose cost."<< endl;
-    pause();
+    wait();
 } 
 
 void repQty(bookType* books[]) {
     cout << "You chose quantity."<< endl;
-    pause();
+    wait();
 }
 
 void repAge(bookType* books[]) {
     cout << "You chose age."<< endl;
-    pause();
+    wait();
 }
 
 // Function: reports - allows the user to choose a function to display reports
@@ -315,7 +315,7 @@ void reports(bookType* books[])
                 break;
             default:
                 cout << "\nPlease enter a number in the range 1-7." << endl;
-                pause();
+                wait();
         }
     } while (!exitmenu);
 }
