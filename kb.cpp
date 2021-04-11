@@ -41,6 +41,7 @@ using namespace std;
 #define K_ESC -1
 #define K_PGDOWN -2
 #define K_PGUP -3
+#define K_F5 -4
 
 class BufferToggle
 {
@@ -78,43 +79,78 @@ BufferToggle bt;
 
 #define ESCAPE_SEQ 27
 
-int kbhit() {
+int kbhit() { // processes ansi escape sequences if it encounters an escape character
     bt.off();
     char c = std::getchar();
-
-    if (c == ESCAPE_SEQ) {
-        char buff[3];
-        while (c != 0) {
-            c = std::getchar();
-            cout << "(" << (int)c << ")" << endl;
-        }
+    if (c != ESCAPE_SEQ) {
+        return c;
     }
-
+    // handle ANSI escape sequences:
+    // add a timeout mechanism to detect if the input is just an escape character (with nothing following), just return K_ESC
+    cout << '(' << (int)c << ')' << endl;
+    c = std::getchar();
+    cout << '(' << (int)c << ')' << endl;
+    if (c == '[')  {
+        c = std::getchar();
+        cout << '(' << (int)c << ')' << endl;
+        switch (c) {
+            case '5':   
+                c = std::getchar(); // consume ~
+                cout << '(' << (int)c << ')' << endl;
+                return K_PGUP;
+                break;
+            case '6':
+                c = std::getchar(); // consume ~
+                cout << '(' << (int)c << ')' << endl;
+                return K_PGDOWN;
+                break;
+            case '1': // function keys
+                c = std::getchar();
+                cout << '(' << (int)c << ')' << endl;
+                if (c == '5') {
+                    c = std::getchar(); //consume next
+                    cout << '(' << (int)c << ')' << endl;
+                    return K_F5;
+                }
+                break;
+            default:   
+                return 0;
+        }
+    } else {
+        return 0;
+    }
+    
     bt.on();
     return c;
 }
 
 int main(){
     cout << "Press any key." << endl;
-    int c = kbhit();
-    cout << endl;
-    
-    switch (c) {
-        case K_ESC:   
-            cout << "You pressed escape" << endl;
-            break;
-
-        case K_PGDOWN:   
-            cout << "You page downed" << endl;
-            break;
-
-        case K_PGUP:   
-            cout << "You page upped" << endl;
-            break;
-        
-        default: 
-            cout << "you pressed: " << (char)c << endl;
+    int c;
+    while (1) {
+        c = kbhit();
+        cout << endl;
+        switch (c) {
+            case K_ESC:   
+                cout << "You pressed escape" << endl;
+                break;
+            case K_PGDOWN:   
+                cout << "You page downed" << endl;
+                break;
+            case K_PGUP:   
+                cout << "You page upped" << endl;
+                break;
+            case 'q':   
+                exit(0);
+                break;
+            case K_F5:   
+                cout << "you pressed: F5" << endl;
+                break;
+            default: 
+                cout << "you pressed: " << (char)c << endl;
+        }
     }
+    
     
     return 0;
 }

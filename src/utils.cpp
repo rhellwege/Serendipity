@@ -44,6 +44,52 @@ BufferToggle bt;
 char kbhit() {
     bt.off();
     char c = std::getchar();
+    if (c != ESCAPE_SEQ) {
+        bt.on();
+        return c;
+    }
+    // handle ANSI escape sequences:
+    // add a timeout mechanism to detect if the input is just an escape character (with nothing following), just return K_ESC
+    c = std::getchar();
+    if (c == '[')  {
+        c = std::getchar();
+        switch (c) {
+            case '5':   
+                c = std::getchar(); // consume ~
+                bt.on();
+                return K_PGUP;
+                break;
+            case '6':
+                c = std::getchar(); // consume ~
+                bt.on();
+                return K_PGDOWN;
+                break;
+            case '1': // function keys
+                c = std::getchar();
+                if (c == '5') {
+                    c = std::getchar(); //consume next
+                    bt.on();
+                    return K_F5;
+                }
+                break;
+            case 'D':     
+                bt.on();
+                return K_LEFT;
+            case 'A':     
+                bt.on();
+                return K_UP;
+            case 'C':     
+                bt.on();
+                return K_RIGHT;
+            case 'B':     
+                bt.on();
+                return K_DOWN;
+            default:   
+                return 0;
+        }
+    } else {
+        return 0;
+    }
     bt.on();
     return c;
 }

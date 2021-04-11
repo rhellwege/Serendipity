@@ -23,33 +23,30 @@ const int repSpacing = 12;
 // helper function to make code smaller, changes the page number, or can exit the menu
 void navigation(int maxPages, int& page, bool& exitmenu) {
     int toPage;
-    char c;
+    int c;
     bool valid = true;
-    cout << "--------------------------------------------------------------------------------------" << endl;
-    cout << "|  Navigation:  D = Page Down  |  U = Page Up  |  J = Jump to Page  |  Q/Esc = Quit  |" << endl;
-    cout << "--------------------------------------------------------------------------------------" << endl;
+    cout << "-----------------------------------------------------------------------------------------------------------" << endl;
+    cout << "|  Navigation:  PgDown / D = Page Down  |  PgUp / U = Page Up  |  F5 / J = Jump to Page  |  Q/Esc = Quit  |" << endl;
+    cout << "-----------------------------------------------------------------------------------------------------------" << endl;
     c = kbhit();
+    if (c > 0)
+        c = tolower(c); // for processing non escape sequences
     do {
-        switch (tolower(c)) {
-            case 'q':
-                exitmenu = true;
+        if (c == 'q')
+            exitmenu = true;
+        else if (c == 'd' || c == K_PGDOWN || c == K_DOWN || c == K_RIGHT || c == 'j' || c == '\n')
+            page++;
+        else if (c == 'u' || c == K_PGUP || c == K_UP || c == K_LEFT || c == 'k')
+            page--;
+        else if (c == K_F5 || c == 'f') {
+            system("clear");
+            cout << "Jump to page (1-" << maxPages << "): ";
+            cin >> toPage;
+            if (toPage < 1 || toPage > maxPages) {
+                valid = false;
                 break;
-            case 'd':
-                page++;
-                break;
-            case 'u':
-                page--;
-                break;
-            case 'j':    
-                system("clear");
-                cout << "Jump to page (1-" << maxPages << "): ";
-                cin >> toPage;
-                if (toPage < 1 || toPage > maxPages) {
-                    valid = false;
-                    break;
-                }
-                page = toPage;
-                break;
+            }
+            page = toPage;
         }
     } while(!valid);
 }
@@ -181,6 +178,7 @@ void repWholesale(bookType* books[]) {
         //cout << "* " << setw((repSpacing*3)+wTitle+wIsbn+wQty-1) << right  << "Total:" << setw(wWhole+repSpacing) << total << "        *" << endl;
         cout << "* " << setw((repSpacing*3)+wTitle+wIsbn+wQty-1) << right << "Total:" << left
              << setw(repSpacing+1) << ' ' << "$" << setfill('.') << right << setw(wWhole-2) << total << "        *" << setfill(' ') << endl;
+        cout << "*                                                                                                                      *" << endl;
         cout << "************************************************************************************************************************" << endl;
         // handle navigation:
         navigation(maxPages, page, exitmenu);
@@ -246,6 +244,7 @@ void repRetail(bookType* books[]) {
         //cout << "*                                    Total: " << total << "                                                                  *" << endl;
         cout << "* " << setw((repSpacing*3)+wTitle+wIsbn+wQty-1) << right << "Total:" << left
              << setw(repSpacing+1) << ' ' << "$" << setfill('.') << right << setw(wRetail-2) << total << "          *" << setfill(' ') << endl;
+        cout << "*                                                                                                                      *" << endl;
         cout << "************************************************************************************************************************" << endl;
         // handle navigation:
         navigation(maxPages, page, exitmenu);

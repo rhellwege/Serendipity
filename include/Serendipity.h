@@ -29,6 +29,16 @@ void repQty(bookType* books[]);
 void repAge(bookType* books[]); 
 
 // utils:
+#define K_ESC -1
+#define K_PGDOWN -2
+#define K_PGUP -3
+#define K_F5 -4
+#define K_UP -5
+#define K_DOWN -6
+#define K_LEFT -7
+#define K_RIGHT -8
+#define ESCAPE_SEQ 27
+
 void wait();
 char kbhit();
 void ruler();
