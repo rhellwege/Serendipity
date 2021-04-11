@@ -40,7 +40,7 @@ void repAge(bookType* books[]);
 #define ESCAPE_SEQ 27
 
 void wait();
-char kbhit();
+int kbhit();
 void ruler();
 bool searchInsensitive(const string& src, const string& substr);
 string get_date();

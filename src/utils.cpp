@@ -7,41 +7,31 @@ const int COLS = 120;
 #include <stdlib.h>
 #include <stdio.h>
 
-class BufferToggle
-{
+class BufferToggle {
     private:
         struct termios t;
-
     public:
-
-        /*
-         * Disables buffered input
-         */
-
-        void off(void)
-        {
+        // Disables buffered input
+        void off(void) {
             tcgetattr(STDIN_FILENO, &t); //get the current terminal I/O structure
             t.c_lflag &= ~ICANON; //Manipulate the flag bits to do what you want it to do
             tcsetattr(STDIN_FILENO, TCSANOW, &t); //Apply the new settings
             
         }
-
-
-        /*
-         * Enables buffered input
-         */
-
-        void on(void)
-        {
+        // Enables buffered input
+        void on(void) {
             tcgetattr(STDIN_FILENO, &t); //get the current terminal I/O structure
             t.c_lflag |= ICANON; //Manipulate the flag bits to do what you want it to do
             tcsetattr(STDIN_FILENO, TCSANOW, &t); //Apply the new settings
         }
 };
 
-BufferToggle bt;
+BufferToggle bt; // global variable
 
-char kbhit() {
+// replacement for getchar
+// returns int so it can return more information than the 8 bits of information a char holds
+// handles ANSI escape sequences inside
+int kbhit() {
     bt.off();
     char c = std::getchar();
     if (c != ESCAPE_SEQ) {
@@ -94,6 +84,7 @@ char kbhit() {
     return c;
 }
 
+// returns the current date as a string in mm/dd/yy format
 string get_date() {
     char buff[30];
     time_t t = time(0);

@@ -25,9 +25,9 @@ void navigation(int maxPages, int& page, bool& exitmenu) {
     int toPage;
     int c;
     bool valid = true;
-    cout << "-----------------------------------------------------------------------------------------------------------" << endl;
-    cout << "|  Navigation:  PgDown / D = Page Down  |  PgUp / U = Page Up  |  F5 / J = Jump to Page  |  Q/Esc = Quit  |" << endl;
-    cout << "-----------------------------------------------------------------------------------------------------------" << endl;
+    cout << "--------------------------------------------------------------------------------------------------" << endl;
+    cout << "|  Navigation:  PgDown = Next Page  |  PgUp = Previus Page  |  F5 = Jump to Page  |  Esc = Quit  |" << endl;
+    cout << "--------------------------------------------------------------------------------------------------" << endl;
     c = kbhit();
     if (c > 0)
         c = tolower(c); // for processing non escape sequences
