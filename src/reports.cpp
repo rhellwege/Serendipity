@@ -1,15 +1,3 @@
-// =================================================
-// Name: Ryan Hellwege
-// Date: 27 Jan, 2021
-// Professor: Jeff Barnett
-// Assignment A(.5)
-// Program Name: reportsmenu.cpp
-// ------------------------------------------------
-// Algorithim:
-// Step 1: output options
-// Step 2: allow the user to input a number
-// =================================================
-
 #include "../include/Serendipity.h"
 #include <iomanip>
 
@@ -34,7 +22,7 @@ void navigation(int maxPages, int& page, bool& exitmenu) {
     do {
         if (c == 'q')
             exitmenu = true;
-        else if (c == 'd' || c == K_PGDOWN || c == K_DOWN || c == K_RIGHT || c == 'j' || c == '\n')
+        else if (c == 'd' || c == K_PGDOWN || c == K_DOWN || c == K_RIGHT || c == 'j')
             page++;
         else if (c == 'u' || c == K_PGUP || c == K_UP || c == K_LEFT || c == 'k')
             page--;
@@ -107,8 +95,14 @@ void repListing(bookType* books[]) {
                  << setw(wDate) << books[index]->getDateAdded()
                  << right
                  << setw(wQty-1) << books[index]->getQty()
-                 << setw(wWhole) << books[index]->getWholesale()
-                 << setw(wRetail) << books[index]->getRetail()
+                 << left  << " $"
+                 << setfill('.') << right
+                 << setw(wWhole-2) << books[index]->getWholesale()
+                 << setfill(' ')
+                 << left  << " $"
+                 << setfill('.') << right
+                 << setw(wRetail-2) << books[index]->getRetail()
+                 << setfill(' ')
                  << "  *" << endl;
             cout << "*                                                                                                                      *" << endl;
         }
