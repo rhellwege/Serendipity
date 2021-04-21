@@ -286,22 +286,58 @@ void reports(bookType* books[])
         cin >> choice;
         switch (choice) {
             case '1':
-                repListing(books);
+                if (bookType::getBookCount() > 0)
+                    repListing(books);
+                else {
+                    system("clear");
+                    cout << "Database is empty, try again after adding records." << endl;
+                    wait();
+                }
                 break;
             case '2':
-                repWholesale(books);
+                if (bookType::getBookCount() > 0)
+                    repWholesale(books);
+                else {
+                    system("clear");
+                    cout << "Database is empty, try again after adding records." << endl;
+                    wait();
+                }
                 break;
             case '3':
-                repRetail(books);
+                if (bookType::getBookCount() > 0)
+                    repRetail(books);
+                else {
+                    system("clear");
+                    cout << "Database is empty, try again after adding records." << endl;
+                    wait();
+                }
                 break;
             case '4':
-                repQty(books);
+                if (bookType::getBookCount() > 0)
+                    repQty(books);
+                else {
+                    system("clear");
+                    cout << "Database is empty, try again after adding records." << endl;
+                    wait();
+                }
                 break;
             case '5':
-                repCost(books);
+                if (bookType::getBookCount() > 0)
+                    repCost(books);
+                else {
+                    system("clear");
+                    cout << "Database is empty, try again after adding records." << endl;
+                    wait();
+                }
                 break;
             case '6':
-                repAge(books);
+                if (bookType::getBookCount() > 0)
+                    repAge(books);
+                else {
+                    system("clear");
+                    cout << "Database is empty, try again after adding records." << endl;
+                    wait();
+                }
                 break;
             case '7':
                 exitmenu = true;

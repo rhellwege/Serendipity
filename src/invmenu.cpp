@@ -53,11 +53,9 @@ int lookupBook(bookType* books[]) {
 void deleteBook(bookType* books[]) {
     int deleteIndex = lookupBook(books);
     char choice;
-    if (deleteIndex == -1)  {
+    if (deleteIndex == -1) {
         cout << "Couldn't find that item. Try again." << endl;
-        cout << "Press any key to continue...";
-        cin.ignore();
-        cin.get();
+        wait();
         return;
     }
     // swap with last element

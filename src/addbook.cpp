@@ -98,7 +98,7 @@ void addBook(bookType* books[]) {
                     break;
                 }
     
-                books[bookType::getBookCount()] = new bookType( // initiate the class with a default constructor
+                books[bookType::getBookCount()] = new bookType(
                     tmpTitle, tmpIsbn, tmpAuthor, 
                     tmpPublisher, tmpDate, tmpQty, 
                     tmpWholesale, tmpRetail

@@ -4,6 +4,13 @@
 #include <iostream>
 #include <iomanip>
 using namespace std;
+
+enum compareBy {
+    COMPARE_QTY,
+    COMPARE_WHOLESALE,
+    COMPARE_RETAIL
+};
+
 class bookType {
 private:
     // static
@@ -19,6 +26,7 @@ private:
     float  retail;  
 
 public:
+    static int compare;
     //constructors:
     bookType();
     bookType(
@@ -55,6 +63,14 @@ public:
     // additional functionality:
     void print() const;
     bool equals(const bookType& other) const;
+
+    // operator overloading
+    friend ostream& operator<<(ostream& os, const bookType& book);
+    friend istream& operator>>(istream& is, const bookType& book);
+    bool operator<(const bookType& other);
+    bool operator>(const bookType& other);
+    bool operator==(const bookType& other);
+    bool operator!=(const bookType& other);
 };
 
 
