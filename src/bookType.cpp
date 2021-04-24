@@ -94,19 +94,19 @@ void bookType::setRetail(float _retail) {
 // additional functionality:
 void bookType::print() const {
     cout << "-------------------------------------------" << endl;
-     cout << "|          Serendipity Booksellers        |" << endl;
-     cout << "|             Book Information            |" << endl;
-     cout << "|                                         |" << endl;
-     cout << "-------------------------------------------" << endl;
-     cout << endl;
-     cout << setw(20) << "ISBN"              << ">>  " << getIsbn() << endl;
-     cout << setw(20) << "Title"             << ">>  " << getTitle().substr(0,25) << endl;
-     cout << setw(20) << "Author"            << ">>  " << getAuthor().substr(0,25)    << endl;
-     cout << setw(20) << "Publisher"         << ">>  " << getPublisher().substr(0,25) << endl;
-     cout << setw(20) << "Date Added"        << ">>  " << getDateAdded() << endl;
-     cout << setw(20) << "Quantity on Hand"  << ">>  " << getQty() << endl;
-     cout << setw(20) << "Wholesale Cost"    << ">>  " << fixed << setprecision(2) << getWholesale() << endl;
-     cout << setw(20) << "Retail Price"      << ">>  " << fixed << setprecision(2) << getRetail()    << endl;
+    cout << "|          Serendipity Booksellers        |" << endl;
+    cout << "|             Book Information            |" << endl;
+    cout << "|                                         |" << endl;
+    cout << "-------------------------------------------" << endl;
+    cout << endl;
+    cout << setw(20) << "ISBN"              << ">>  " << getIsbn() << endl;
+    cout << setw(20) << "Title"             << ">>  " << getTitle().substr(0,25) << endl;
+    cout << setw(20) << "Author"            << ">>  " << getAuthor().substr(0,25)    << endl;
+    cout << setw(20) << "Publisher"         << ">>  " << getPublisher().substr(0,25) << endl;
+    cout << setw(20) << "Date Added"        << ">>  " << getDateAdded() << endl;
+    cout << setw(20) << "Quantity on Hand"  << ">>  " << getQty() << endl;
+    cout << setw(20) << "Wholesale Cost"    << ">>  " << fixed << setprecision(2) << getWholesale() << endl;
+    cout << setw(20) << "Retail Price"      << ">>  " << fixed << setprecision(2) << getRetail()    << endl;
 }
 
 bool bookType::equals(const bookType& other) const {
@@ -122,4 +122,38 @@ bool bookType::equals(const bookType& other) const {
                                     result = true;
     
     return result;
+}
+
+ostream& operator<<(ostream& os, const bookType& book) {
+    os << "-------------------------------------------" << endl;
+    os << "|          Serendipity Booksellers        |" << endl;
+    os << "|             Book Information            |" << endl;
+    os << "|                                         |" << endl;
+    os << "-------------------------------------------" << endl;
+    os << endl;
+    os << setw(20) << "ISBN"              << ">>  " << book.getIsbn() << endl;
+    os << setw(20) << "Title"             << ">>  " << book.getTitle().substr(0,25) << endl;
+    os << setw(20) << "Author"            << ">>  " << book.getAuthor().substr(0,25)    << endl;
+    os << setw(20) << "Publisher"         << ">>  " << book.getPublisher().substr(0,25) << endl;
+    os << setw(20) << "Date Added"        << ">>  " << book.getDateAdded() << endl;
+    os << setw(20) << "Quantity on Hand"  << ">>  " << book.getQty() << endl;
+    os << setw(20) << "Wholesale Cost"    << ">>  " << fixed << setprecision(2) << book.getWholesale() << endl;
+    os << setw(20) << "Retail Price"      << ">>  " << fixed << setprecision(2) << book.getRetail()    << endl;
+    return os;
+}
+istream& operator>>(istream& is, const bookType& book) {
+    
+    return is;
+}
+bool bookType::operator<(const bookType& other) {
+    return this->getQty() < other.getQty();
+}
+bool bookType::operator>(const bookType& other) {
+    return this->getQty() > other.getQty();
+}
+bool bookType::operator==(const bookType& other) {
+    return this->getQty() == other.getQty();
+}
+bool bookType::operator!=(const bookType& other) {
+    return this->getQty() != other.getQty();
 }

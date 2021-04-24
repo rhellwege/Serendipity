@@ -4,7 +4,7 @@
 const int RESULTS_PER_PAGE = 10;
 
 // formatting widths
-const int wTitle = 28, wIsbn = 11, wAuthor = 15, wPublisher = 15, wDate = 11, wQty = 8, wWhole = 15, wRetail = 13;
+const int wTitle = 28, wIsbn = 14, wAuthor = 15, wPublisher = 15, wDate = 11, wQty = 8, wWhole = 15, wRetail = 13;
 const int repTitle = 40;
 const int repSpacing = 12;
 
@@ -37,6 +37,10 @@ void navigation(int maxPages, int& page, bool& exitmenu) {
             page = toPage;
         }
     } while(!valid);
+    if (page > maxPages)
+            page = 1;
+        if (page <= 0)
+            page = maxPages;
 }
 
 // summary of every listing, displaying every parameter of each book.
@@ -46,17 +50,13 @@ void repListing(bookType* books[]) {
     int i;
     bool exitmenu = false;
     do {
-        if (page > maxPages)
-            page = 1;
-        if (page <= 0)
-            page = maxPages;
         system("clear");
-        cout << "************************************************************************************************************************" << endl;
-        cout << "*                                               SERENDIPITY BOOKSELLERS                                                *" << endl;
-        cout << "*                                                    REPORT LISTING                                                    *" << endl;
-        cout << "*                                                                                                                      *" << endl;
-        cout << "*       DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "           DATABASE SIZE: " << DBSIZE << "            CURRENT BOOK COUNT: " << bookType::getBookCount() << "           *" << endl;
-        cout << "*                                                                                                                      *" << endl;
+        cout << "***************************************************************************************************************************" << endl;
+        cout << "*                                               SERENDIPITY BOOKSELLERS                                                   *" << endl;
+        cout << "*                                                    REPORT LISTING                                                       *" << endl;
+        cout << "*                                                                                                                         *" << endl;
+        cout << "*    DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "           DATABASE SIZE: " << DBSIZE << "            CURRENT BOOK COUNT: " << bookType::getBookCount() << "        *" << endl;
+        cout << "*                                                                                                                         *" << endl;
         cout << left << fixed << setprecision(2);
         // table heading
         cout << "* " 
@@ -104,9 +104,9 @@ void repListing(bookType* books[]) {
                  << setw(wRetail-2) << books[index]->getRetail()
                  << setfill(' ')
                  << "  *" << endl;
-            cout << "*                                                                                                                      *" << endl;
+            cout << "*                                                                                                                         *" << endl;
         }
-        cout << "************************************************************************************************************************" << endl;
+        cout << "***************************************************************************************************************************" << endl;
         // handle navigation:
         navigation(maxPages, page, exitmenu);
     } while (!exitmenu);
@@ -120,16 +120,12 @@ void repWholesale(bookType* books[]) {
     bool exitmenu = false;
     cout << left << fixed << setprecision(2);
     do {
-        if (page > maxPages)
-            page = 1;
-        if (page <= 0)
-            page = maxPages;
         system("clear");
         cout << "************************************************************************************************************************" << endl;
         cout << "*                                               SERENDIPITY BOOKSELLERS                                                *" << endl;
         cout << "*                                               REPORT WHOLESALE LISTING                                               *" << endl;
         cout << "*                                                                                                                      *" << endl;
-        cout << "*       DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "           DATABASE SIZE: " << DBSIZE << "            CURRENT BOOK COUNT: " << bookType::getBookCount() << "           *" << endl;
+        cout << "*    DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "           DATABASE SIZE: " << DBSIZE << "            CURRENT BOOK COUNT: " << bookType::getBookCount() << "     *" << endl;
         cout << "*                                                                                                                      *" << endl;
         // table heading
         cout << "* " << left
@@ -137,7 +133,7 @@ void repWholesale(bookType* books[]) {
              << setw(wIsbn) << "ISBN" << setw(repSpacing) << ' '
              << setw(wQty) << "QTY O/H" << setw(repSpacing) << ' '
              << setw(wWhole) << "WHOLESALE COST" 
-             << "       *" << endl;
+             << "    *" << endl;
         // lines
         cout << setfill('-');
         cout << "*" 
@@ -145,7 +141,7 @@ void repWholesale(bookType* books[]) {
              << setw(wIsbn) << ' ' << setfill(' ') << setw(repSpacing) << ' ' << setfill('-')
              << setw(wQty) << ' ' << setfill(' ') << setw(repSpacing) << ' ' << setfill('-')
              << setw(wWhole) << ' ' 
-             << "        *" << endl;
+             << "     *" << endl;
         cout << setfill(' ');
         // table body
         for (i = 0; i < RESULTS_PER_PAGE; i++) {
@@ -160,7 +156,7 @@ void repWholesale(bookType* books[]) {
                  << left << "$" << setfill('.') << right
                  << setw(wWhole-2) << books[index]->getWholesale()
                  << setfill(' ')
-                 << "        *" << endl;
+                 << "     *" << endl;
             cout << "*                                                                                                                      *" << endl;
         }
         // display total:
@@ -171,7 +167,7 @@ void repWholesale(bookType* books[]) {
         //cout << "*                                                                                               Total: " << total << " *" << endl;
         //cout << "* " << setw((repSpacing*3)+wTitle+wIsbn+wQty-1) << right  << "Total:" << setw(wWhole+repSpacing) << total << "        *" << endl;
         cout << "* " << setw((repSpacing*3)+wTitle+wIsbn+wQty-1) << right << "Total:" << left
-             << setw(repSpacing+1) << ' ' << "$" << setfill('.') << right << setw(wWhole-2) << total << "        *" << setfill(' ') << endl;
+             << setw(repSpacing+1) << ' ' << "$" << setfill('.') << right << setw(wWhole-2) << total << "     *" << setfill(' ') << endl;
         cout << "*                                                                                                                      *" << endl;
         cout << "************************************************************************************************************************" << endl;
         // handle navigation:
@@ -187,16 +183,12 @@ void repRetail(bookType* books[]) {
     bool exitmenu = false;
     cout << left << fixed << setprecision(2);
     do {
-        if (page > maxPages)
-            page = 1;
-        if (page <= 0)
-            page = maxPages;
         system("clear");
         cout << "************************************************************************************************************************" << endl;
         cout << "*                                               SERENDIPITY BOOKSELLERS                                                *" << endl;
         cout << "*                                                REPORT RETAIL LISTING                                                 *" << endl;
         cout << "*                                                                                                                      *" << endl;
-        cout << "*       DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "           DATABASE SIZE: " << DBSIZE << "            CURRENT BOOK COUNT: " << bookType::getBookCount() << "           *" << endl;
+        cout << "*    DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "           DATABASE SIZE: " << DBSIZE << "            CURRENT BOOK COUNT: " << bookType::getBookCount() << "     *" << endl;
         cout << "*                                                                                                                      *" << endl;
         // table heading
         cout << "* " << left
@@ -204,7 +196,7 @@ void repRetail(bookType* books[]) {
              << setw(wIsbn) << "ISBN" << setw(repSpacing) << ' '
              << setw(wQty) << "QTY O/H" << setw(repSpacing) << ' '
              << setw(wRetail) << "RETAIL PRICE" 
-             << "         *" << endl;
+             << "      *" << endl;
         // lines
         cout << setfill('-');
         cout << "*" 
@@ -212,7 +204,7 @@ void repRetail(bookType* books[]) {
              << setw(wIsbn) << ' ' << setfill(' ') << setw(repSpacing) << ' ' << setfill('-')
              << setw(wQty) << ' ' << setfill(' ') << setw(repSpacing) << ' ' << setfill('-')
              << setw(wRetail) << ' ' 
-             << "          *" << endl;
+             << "       *" << endl;
         cout << setfill(' ');
         // table body
         for (i = 0; i < RESULTS_PER_PAGE; i++) {
@@ -227,7 +219,7 @@ void repRetail(bookType* books[]) {
                  << left << "$" << setfill('.') << right
                  << setw(wRetail-2) << books[index]->getRetail()
                  << setfill(' ')
-                 << "          *" << endl;
+                 << "       *" << endl;
             cout << "*                                                                                                                      *" << endl;
         }
         // display total:
@@ -237,7 +229,7 @@ void repRetail(bookType* books[]) {
         }
         //cout << "*                                    Total: " << total << "                                                                  *" << endl;
         cout << "* " << setw((repSpacing*3)+wTitle+wIsbn+wQty-1) << right << "Total:" << left
-             << setw(repSpacing+1) << ' ' << "$" << setfill('.') << right << setw(wRetail-2) << total << "          *" << setfill(' ') << endl;
+             << setw(repSpacing+1) << ' ' << "$" << setfill('.') << right << setw(wRetail-2) << total << "       *" << setfill(' ') << endl;
         cout << "*                                                                                                                      *" << endl;
         cout << "************************************************************************************************************************" << endl;
         // handle navigation:
@@ -248,11 +240,53 @@ void repRetail(bookType* books[]) {
 void repCost(bookType* books[]) {
     cout << "You chose cost."<< endl;
     wait();
-} 
+}
 
 void repQty(bookType* books[]) {
-    cout << "You chose quantity."<< endl;
-    wait();
+    int page = 1;
+    int maxPages = bookType::getBookCount() / RESULTS_PER_PAGE;
+    int i;
+    bool exitmenu = false;
+    cout << left << fixed << setprecision(2);
+    sortArray(books, bookType::getBookCount());
+    do {
+        system("clear");
+        cout << "************************************************************************************************************************" << endl;
+        cout << "*                                               SERENDIPITY BOOKSELLERS                                                *" << endl;
+        cout << "*                                                REPORT RETAIL LISTING                                                 *" << endl;
+        cout << "*                                                                                                                      *" << endl;
+        cout << "*    DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "           DATABASE SIZE: " << DBSIZE << "            CURRENT BOOK COUNT: " << bookType::getBookCount() << "     *" << endl;
+        cout << "*                                                                                                                      *" << endl;
+        cout << "* " << left
+             << setw(repTitle) << "TITLE" << setw(repSpacing) << ' '
+             << setw(wIsbn) << "ISBN" << setw(repSpacing) << ' '
+             << setw(wQty) << "QTY O/H" << setw(repSpacing) << ' '
+             << "                   *" << endl;
+        // lines
+        cout << setfill('-');
+        cout << "*" 
+             << setw(repTitle) << ' ' << setfill(' ') << setw(repSpacing) << ' ' << setfill('-')
+             << setw(wIsbn) << ' ' << setfill(' ') << setw(repSpacing) << ' ' << setfill('-')
+             << setw(wQty) << ' ' << setfill(' ') << setw(repSpacing) << ' ' << setfill('-')
+             << "                    *" << endl;
+        cout << setfill(' ');
+        // table body
+        for (i = 0; i < RESULTS_PER_PAGE; i++) {
+            if (i >= bookType::getBookCount())
+                break;
+            int index = i + (page-1)*RESULTS_PER_PAGE;
+            cout << "* " << left
+                 << setw(repTitle) << books[index]->getTitle().substr(0, repTitle-1)<< setw(repSpacing) << ' '
+                 << setw(wIsbn) << books[index]->getIsbn()<< setw(repSpacing) << ' '
+                 << right
+                 << setw(wQty-1) << books[index]->getQty()<< setw(repSpacing+1) << ' '
+                 << setfill(' ')
+                 << "                   *" << endl;
+            cout << "*                                                                                                                      *" << endl;
+        }
+        cout << "************************************************************************************************************************" << endl;
+        navigation(maxPages, page, exitmenu);
+    } while(!exitmenu);
 }
 
 void repAge(bookType* books[]) {

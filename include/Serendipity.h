@@ -1,6 +1,7 @@
 #ifndef SERENDIPITY_H
 #define SERENDIPITY_H
 #include "bookType.h"
+#include "templates.hpp"
 #include <iostream>
 #include <iomanip>
 #include <string>

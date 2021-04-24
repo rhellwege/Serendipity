@@ -88,7 +88,7 @@ int kbhit() {
 string get_date() {
     char buff[30];
     time_t t = time(0);
-    strftime(buff, 30, "%m/%d/%Y", localtime(&t)); // mm/dd/yy
+    strftime(buff, 30, "%m/%d/%Y %I:%M %p", localtime(&t)); // mm/dd/yy
     return buff;
 }
 

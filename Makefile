@@ -5,7 +5,7 @@ SRC=src/
 
 ODIR=obj
 
-_DEPS = bookType.h Serendipity.h
+_DEPS = bookType.h Serendipity.h templates.hpp
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
 _OBJ = addbook.o bookType.o cashier.o editbook.o invmenu.o mainmenu.o reports.o utils.o
