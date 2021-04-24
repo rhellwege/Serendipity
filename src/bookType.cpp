@@ -1,6 +1,7 @@
 #include "../include/bookType.h"
 
 int bookType::bookCount = 0; // initialize the static variable
+int bookType::compare = COMPARE_QTY;
 
 //constructors:
 bookType::bookType() {
@@ -141,19 +142,117 @@ ostream& operator<<(ostream& os, const bookType& book) {
     os << setw(20) << "Retail Price"      << ">>  " << fixed << setprecision(2) << book.getRetail()    << endl;
     return os;
 }
-istream& operator>>(istream& is, const bookType& book) {
-    
+istream& operator>>(istream& is, bookType& book) {
+    string temp;
+    double tempD;
+    int tempI;
+
+    is.ignore();
+    getline(is, temp);
+    book.setTitle(temp);
+
+    is.ignore();
+    getline(is, temp);
+    book.setISBN(temp);
+
+    is.ignore();
+    getline(is, temp);
+    book.setAuthor(temp);
+
+    is.ignore();
+    getline(is, temp);
+    book.setPublisher(temp);
+
+    is.ignore();
+    getline(is, temp);
+    book.setDate(temp);
+
+    is.ignore();
+    is >> tempI;
+    book.setQty(tempI);
+
+    is.ignore();
+    is >> tempD;
+    book.setWholesale(tempD);
+
+    is.ignore();
+    is >> tempD;
+    book.setRetail(tempD);
     return is;
 }
 bool bookType::operator<(const bookType& other) {
-    return this->getQty() < other.getQty();
+    switch (bookType::compare) {
+        case COMPARE_QTY:    
+            return this->getQty() < other.getQty();
+            break;
+        case COMPARE_RETAIL:
+            return this->getRetail() < other.getRetail();
+            break;
+        case COMPARE_WHOLESALE:
+            return this->getWholesale() < other.getWholesale();
+            break;
+        case COMPARE_TITLE:
+            return this->getTitle() < other.getTitle();
+            break;
+        default:
+            return false;
+            break;
+    }
 }
 bool bookType::operator>(const bookType& other) {
-    return this->getQty() > other.getQty();
+    switch (bookType::compare) {
+        case COMPARE_QTY:    
+            return this->getQty() > other.getQty();
+            break;
+        case COMPARE_RETAIL:
+            return this->getRetail() > other.getRetail();
+            break;
+        case COMPARE_WHOLESALE:
+            return this->getWholesale() > other.getWholesale();
+            break;
+        case COMPARE_TITLE:
+            return this->getTitle() > other.getTitle();
+            break;
+        default:
+            return false;
+            break;
+    }
 }
 bool bookType::operator==(const bookType& other) {
-    return this->getQty() == other.getQty();
+    switch (bookType::compare) {
+        case COMPARE_QTY:    
+            return this->getQty() == other.getQty();
+            break;
+        case COMPARE_RETAIL:
+            return this->getRetail() == other.getRetail();
+            break;
+        case COMPARE_WHOLESALE:
+            return this->getWholesale() == other.getWholesale();
+            break;
+        case COMPARE_TITLE:
+            return this->getTitle() == other.getTitle();
+            break;
+        default:
+            return false;
+            break;
+    }
 }
 bool bookType::operator!=(const bookType& other) {
-    return this->getQty() != other.getQty();
+    switch (bookType::compare) {
+        case COMPARE_QTY:    
+            return this->getQty() != other.getQty();
+            break;
+        case COMPARE_RETAIL:
+            return this->getRetail() != other.getRetail();
+            break;
+        case COMPARE_WHOLESALE:
+            return this->getWholesale() != other.getWholesale();
+            break;
+        case COMPARE_TITLE:
+            return this->getTitle() != other.getTitle();
+            break;
+        default:
+            return false;
+            break;
+    }
 }

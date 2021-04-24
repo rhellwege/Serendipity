@@ -248,12 +248,13 @@ void repQty(bookType* books[]) {
     int i;
     bool exitmenu = false;
     cout << left << fixed << setprecision(2);
-    sortArray(books, bookType::getBookCount());
+    bookType::compare = COMPARE_QTY;
+    sortArrayDecending(books, bookType::getBookCount());
     do {
         system("clear");
         cout << "************************************************************************************************************************" << endl;
         cout << "*                                               SERENDIPITY BOOKSELLERS                                                *" << endl;
-        cout << "*                                                REPORT RETAIL LISTING                                                 *" << endl;
+        cout << "*                                                  QUANTITY LISTING                                                    *" << endl;
         cout << "*                                                                                                                      *" << endl;
         cout << "*    DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "           DATABASE SIZE: " << DBSIZE << "            CURRENT BOOK COUNT: " << bookType::getBookCount() << "     *" << endl;
         cout << "*                                                                                                                      *" << endl;
@@ -297,8 +298,7 @@ void repAge(bookType* books[]) {
 // Function: reports - allows the user to choose a function to display reports
 // pre-condition: navigated to from mainmenu.
 // post-condition: navigation.
-void reports(bookType* books[]) 
-{
+void reports(bookType* books[]) {
     char choice;
     bool exitmenu = false;
 

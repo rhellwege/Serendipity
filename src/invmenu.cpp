@@ -40,7 +40,8 @@ int lookupBook(bookType* books[]) {
         ) { // if the title contains the substring searchTerm (case insensitive)
             char choice;            
             system("clear");
-            books[i]->print();
+            //books[i]->print();
+            cout << *books[i]; // output stream overloaded.
             cout << "\nSelect this item? (y/n): ";
             cin >> choice;
             if (tolower(choice) == 'y')

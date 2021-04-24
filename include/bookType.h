@@ -8,7 +8,9 @@ using namespace std;
 enum compareBy {
     COMPARE_QTY,
     COMPARE_WHOLESALE,
-    COMPARE_RETAIL
+    COMPARE_RETAIL,
+    COMPARE_TITLE,
+    COMPARE_AUTHOR
 };
 
 class bookType {
@@ -66,7 +68,7 @@ public:
 
     // operator overloading
     friend ostream& operator<<(ostream& os, const bookType& book);
-    friend istream& operator>>(istream& is, const bookType& book);
+    friend istream& operator>>(istream& is, bookType& book);
     bool operator<(const bookType& other);
     bool operator>(const bookType& other);
     bool operator==(const bookType& other);
