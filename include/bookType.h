@@ -70,7 +70,9 @@ public:
     friend ostream& operator<<(ostream& os, const bookType& book);
     friend istream& operator>>(istream& is, bookType& book);
     bool operator<(const bookType& other);
+    bool operator<=(const bookType& other);
     bool operator>(const bookType& other);
+    bool operator>=(const bookType& other);
     bool operator==(const bookType& other);
     bool operator!=(const bookType& other);
 };

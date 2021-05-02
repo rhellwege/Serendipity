@@ -151,32 +151,28 @@ istream& operator>>(istream& is, bookType& book) {
     getline(is, temp);
     book.setTitle(temp);
 
-    is.ignore();
     getline(is, temp);
     book.setISBN(temp);
 
-    is.ignore();
     getline(is, temp);
     book.setAuthor(temp);
 
-    is.ignore();
     getline(is, temp);
     book.setPublisher(temp);
 
-    is.ignore();
     getline(is, temp);
     book.setDate(temp);
 
-    is.ignore();
     is >> tempI;
+    is.ignore();
     book.setQty(tempI);
 
-    is.ignore();
     is >> tempD;
+    is.ignore();
     book.setWholesale(tempD);
 
-    is.ignore();
     is >> tempD;
+    is.ignore();
     book.setRetail(tempD);
     return is;
 }
@@ -218,6 +214,47 @@ bool bookType::operator>(const bookType& other) {
             break;
     }
 }
+
+bool bookType::operator>=(const bookType& other) {
+    switch (bookType::compare) {
+        case COMPARE_QTY:    
+            return this->getQty() >= other.getQty();
+            break;
+        case COMPARE_RETAIL:
+            return this->getRetail() >= other.getRetail();
+            break;
+        case COMPARE_WHOLESALE:
+            return this->getWholesale() >= other.getWholesale();
+            break;
+        case COMPARE_TITLE:
+            return this->getTitle() >= other.getTitle();
+            break;
+        default:
+            return false;
+            break;
+    }
+}
+
+bool bookType::operator<=(const bookType& other) {
+    switch (bookType::compare) {
+        case COMPARE_QTY:    
+            return this->getQty() <= other.getQty();
+            break;
+        case COMPARE_RETAIL:
+            return this->getRetail() <= other.getRetail();
+            break;
+        case COMPARE_WHOLESALE:
+            return this->getWholesale() <= other.getWholesale();
+            break;
+        case COMPARE_TITLE:
+            return this->getTitle() <= other.getTitle();
+            break;
+        default:
+            return false;
+            break;
+    }
+}
+
 bool bookType::operator==(const bookType& other) {
     switch (bookType::compare) {
         case COMPARE_QTY:    

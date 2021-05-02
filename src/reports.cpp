@@ -249,7 +249,7 @@ void repQty(bookType* books[]) {
     bool exitmenu = false;
     cout << left << fixed << setprecision(2);
     bookType::compare = COMPARE_QTY;
-    sortArrayDecending(books, bookType::getBookCount());
+    selectionSort(books, bookType::getBookCount(), false);
     do {
         system("clear");
         cout << "************************************************************************************************************************" << endl;
