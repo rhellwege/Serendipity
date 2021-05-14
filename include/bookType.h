@@ -17,6 +17,9 @@ class bookType {
 private:
     // static
     static int bookCount;
+    //setters:
+    static void incBookCount();
+    static void decBookCount();
     //members:
     string bookTitle;
     string isbn;
@@ -36,6 +39,7 @@ public:
         const string& publisher, const string& date, int qty, float wholesale, 
         float retail
     );
+    ~bookType();
     
     //getters:
     static int getBookCount(); // static methods cannot have const
@@ -49,9 +53,7 @@ public:
     float getWholesale() const;
     float getRetail() const;
 
-    //setters:
-    static void incBookCount();
-    static void decBookCount();
+    //setters
 
     void setTitle(const string& _title);
     void setISBN(const string& _isbn);

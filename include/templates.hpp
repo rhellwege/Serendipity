@@ -1,6 +1,5 @@
 #ifndef TEMPLATES_HPP
 #define TEMPLATES_HPP
-#include "bookType.h"
 template <typename T>
 void selectionSort(T *array[], int size, bool ascending) {
     int index;

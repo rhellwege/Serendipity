@@ -65,7 +65,7 @@ void deleteBook(bookType* books[]) {
     if (tolower(choice) == 'y') { // if confirmed
         delete books[deleteIndex]; // set the book pointer to zero, and free memory
         books[deleteIndex] = books[bookType::getBookCount()-1]; // switch the last book that was added with what we are deleting, and make that spot inaccessable
-        bookType::decBookCount();
+        //bookType::decBookCount();
     }
 }
 

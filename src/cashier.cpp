@@ -156,4 +156,4 @@ void cashier(bookType* books[]) {
                books[i]->setQty(books[i]->getQty() - shoppingCart[i]);
           }
      }
-}
+} // after confirm purchase, add a prompt asking another time.

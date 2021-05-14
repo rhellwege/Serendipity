@@ -91,20 +91,20 @@ void addBook(bookType* books[]) {
                 cin.ignore();
                 cin >> tmpRetail;
                 break;
-            case '9': // save to database
+            case '9': {// save to database
                 if (bookType::getBookCount() == DBSIZE) {
                     cout << "Database is full, you must delete a record if you would like to add a record." << endl;
                     wait();
                     break;
                 }
-    
-                books[bookType::getBookCount()] = new bookType(
+                int ind = bookType::getBookCount();
+                books[ind] = new bookType(
                     tmpTitle, tmpIsbn, tmpAuthor, 
                     tmpPublisher, tmpDate, tmpQty, 
                     tmpWholesale, tmpRetail
                 ); 
 
-                bookType::incBookCount();
+                //bookType::incBookCount();
                 savedWork = true;
                 
                 tmpIsbn      = "*EMPTY*";
@@ -116,6 +116,7 @@ void addBook(bookType* books[]) {
                 tmpWholesale = 0.0f;
                 tmpRetail    = 0.0f;
                 break;
+            }
             case '0':
                 if (!savedWork) {
                     char exitChoice;

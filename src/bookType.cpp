@@ -13,13 +13,14 @@ bookType::bookType() {
     setQty(0);
     setWholesale(0.0f);
     setRetail(0.0f);
+    incBookCount();
 }
 
 bookType::bookType(
     const string& title, const string& isbn, const string& author, 
     const string& publisher, const string& date, int qty, float wholesale, 
     float retail
-) {
+) : bookType(){
     setTitle(title);
     setISBN(isbn);
     setAuthor(author);
@@ -292,4 +293,8 @@ bool bookType::operator!=(const bookType& other) {
             return false;
             break;
     }
+}
+
+bookType::~bookType() {
+    decBookCount();
 }
