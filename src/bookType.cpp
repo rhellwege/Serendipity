@@ -3,6 +3,58 @@
 int bookType::bookCount = 0; // initialize the static variable
 int bookType::compare = COMPARE_QTY;
 
+bool dateIsLess(string lhs, string rhs) {
+    int numYearL;
+    int numYearR;
+    int numMonL;
+    int numMonR;
+    int numDayL;
+    int numDayR;
+    char yearL[4];
+    char yearR[4];
+    char monL[2];
+    char monR[2];
+    char dayL[2];
+    char dayR[2];
+    int i;
+
+    // compare years
+    for (i = 0; i < 4; i++) {
+        yearL[i] = lhs[i+6];
+    }
+    for (i = 0; i < 4; i++) {
+        yearR[i] = rhs[i+6];
+    }
+    numYearL = atoi(yearL);
+    numYearR = atoi(yearR);
+    if (numYearL != numYearR)
+        return numYearL < numYearR;
+
+    // compare months
+    for (i = 0; i < 2; i++) {
+        monL[i] = lhs[i];
+    }
+    for (i = 0; i < 2; i++) {
+        monR[i] = rhs[i];
+    }
+    numMonL = atoi(monL);
+    numMonR = atoi(monR);
+    if (numMonL != numMonR)
+        return numMonL < numMonR;
+    // compare days
+    for (i = 0; i < 2; i++) {
+        dayL[i] = lhs[i+3];
+    }
+    for (i = 0; i < 2; i++) {
+        dayR[i] = rhs[i+3];
+    }
+    numDayL = atoi(dayL);
+    numDayR = atoi(dayR);
+    if (numDayL != numDayR)
+        return numDayL < numDayR;
+    return false;
+}
+
 //constructors:
 bookType::bookType() {
     setTitle("*EMPTY*");
@@ -191,6 +243,9 @@ bool bookType::operator<(const bookType& other) {
         case COMPARE_TITLE:
             return this->getTitle() < other.getTitle();
             break;
+        case COMPARE_DATE:    
+            return dateIsLess(this->getDateAdded(), other.getDateAdded());
+            break;
         default:
             return false;
             break;
@@ -219,16 +274,19 @@ bool bookType::operator>(const bookType& other) {
 bool bookType::operator>=(const bookType& other) {
     switch (bookType::compare) {
         case COMPARE_QTY:    
-            return this->getQty() >= other.getQty();
+            return this->getQty() <= other.getQty();
             break;
         case COMPARE_RETAIL:
             return this->getRetail() >= other.getRetail();
             break;
         case COMPARE_WHOLESALE:
-            return this->getWholesale() >= other.getWholesale();
+            return this->getWholesale() <= other.getWholesale();
             break;
         case COMPARE_TITLE:
             return this->getTitle() >= other.getTitle();
+            break;
+        case COMPARE_DATE:    
+            return !dateIsLess(this->getDateAdded(), other.getDateAdded());
             break;
         default:
             return false;

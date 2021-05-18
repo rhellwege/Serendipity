@@ -10,7 +10,8 @@ enum compareBy {
     COMPARE_WHOLESALE,
     COMPARE_RETAIL,
     COMPARE_TITLE,
-    COMPARE_AUTHOR
+    COMPARE_AUTHOR,
+    COMPARE_DATE
 };
 
 class bookType {

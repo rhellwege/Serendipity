@@ -275,8 +275,81 @@ void repRetail(orderedLinkedList<bookType*> &masterList) {
 }
 
 void repCost(orderedLinkedList<bookType*> &masterList) {
-    cout << "You chose cost."<< endl;
-    wait();
+    int page = 1;
+    int maxPages = round((float)bookType::getBookCount() / (float)RESULTS_PER_PAGE);
+    int i;
+    bool exitmenu = false;
+    linkedListIterator<bookType*> *pages = new linkedListIterator<bookType*>[maxPages]; // dynamic array of pages
+    linkedListIterator<bookType*> iter;
+    orderedLinkedList<bookType*> costList;
+    bookType::compare = COMPARE_WHOLESALE;
+    for (iter = masterList.begin(); iter != masterList.end(); ++iter) { // copy to sorted temporary list
+        costList.insert(*iter);
+    }
+    i = 0;
+    int j = 0;
+    for (iter = costList.begin(); iter != costList.end(); ++iter) { // collect pages
+        if (i % RESULTS_PER_PAGE == 0) {
+            pages[j] = iter;
+            j++;
+        }
+        i++;
+    }
+    cout << left << fixed << setprecision(2);
+    do {
+        system("clear");
+        cout << "************************************************************************************************************************" << endl;
+        cout << "*                                               SERENDIPITY BOOKSELLERS                                                *" << endl;
+        cout << "*                                                   REPORTS BY COST                                                    *" << endl;
+        cout << "*                                                                                                                      *" << endl;
+        cout << "*    DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "           DATABASE SIZE: " << DBSIZE << "            CURRENT BOOK COUNT: " << bookType::getBookCount() << "     *" << endl;
+        cout << "*                                                                                                                      *" << endl;
+        // table heading
+        cout << "* " << left
+             << setw(repTitle) << "TITLE" << setw(repSpacing) << ' '
+             << setw(wIsbn) << "ISBN" << setw(repSpacing) << ' '
+             << setw(wQty) << "QTY O/H" << setw(repSpacing) << ' '
+             << setw(wWhole) << "WHOLESALE COST" 
+             << "    *" << endl;
+        // lines
+        cout << setfill('-');
+        cout << "*" 
+             << setw(repTitle) << ' ' << setfill(' ') << setw(repSpacing) << ' ' << setfill('-')
+             << setw(wIsbn) << ' ' << setfill(' ') << setw(repSpacing) << ' ' << setfill('-')
+             << setw(wQty) << ' ' << setfill(' ') << setw(repSpacing) << ' ' << setfill('-')
+             << setw(wWhole) << ' ' 
+             << "     *" << endl;
+        cout << setfill(' ');
+        // table body
+        i = 0;
+        for (iter = pages[page-1]; iter != costList.end() && i < RESULTS_PER_PAGE; ++iter) {
+            cout << "* " << left
+                 << setw(repTitle) << (*iter)->getTitle().substr(0, repTitle-1)<< setw(repSpacing) << ' '
+                 << setw(wIsbn) << (*iter)->getIsbn()<< setw(repSpacing) << ' '
+                 << right
+                 << setw(wQty-1) << (*iter)->getQty()<< setw(repSpacing+1) << ' '
+                 << left << "$" << setfill('.') << right
+                 << setw(wWhole-2) << (*iter)->getWholesale()
+                 << setfill(' ')
+                 << "     *" << endl;
+            cout << "*                                                                                                                      *" << endl;
+            i++;
+        }
+        // display total:
+        float total = 0;
+        for (iter = masterList.begin(); iter != masterList.end(); ++iter) {
+            total += (*iter)->getWholesale() * (*iter)->getQty();
+        }
+        //cout << "*                                                                                               Total: " << total << " *" << endl;
+        //cout << "* " << setw((repSpacing*3)+wTitle+wIsbn+wQty-1) << right  << "Total:" << setw(wWhole+repSpacing) << total << "        *" << endl;
+        cout << "* " << setw((repSpacing*3)+wTitle+wIsbn+wQty-1) << right << "Total:" << left
+             << setw(repSpacing+1) << ' ' << "$" << setfill('.') << right << setw(wWhole-2) << total << "     *" << setfill(' ') << endl;
+        cout << "*                                                                                                                      *" << endl;
+        cout << "************************************************************************************************************************" << endl;
+        // handle navigation:
+        navigation(maxPages, page, exitmenu);
+    } while(!exitmenu);
+    delete[] pages;
 }
 
 void repQty(orderedLinkedList<bookType*> &masterList) {
