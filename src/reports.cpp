@@ -1,5 +1,6 @@
 #include "../include/Serendipity.h"
 #include <iomanip>
+#include <cmath>
 
 const int RESULTS_PER_PAGE = 10;
 
@@ -48,7 +49,7 @@ void navigation(int maxPages, int& page, bool& exitmenu) {
 // summary of every listing, displaying every parameter of each book.
 void repListing(orderedLinkedList<bookType*> &masterList) {
     int page = 1;
-    int maxPages = bookType::getBookCount() / RESULTS_PER_PAGE;
+    int maxPages = round((float)bookType::getBookCount() / (float)RESULTS_PER_PAGE);
     int i;
     bool exitmenu = false;
     linkedListIterator<bookType*> *pages = new linkedListIterator<bookType*>[maxPages]; // dynamic array of pages
@@ -98,7 +99,7 @@ void repListing(orderedLinkedList<bookType*> &masterList) {
         cout << setfill(' ');
         // table body
         i = 0;
-        for (iter = pages[page]; iter != masterList.end() && i < RESULTS_PER_PAGE; ++iter) {
+        for (iter = pages[page-1]; iter != masterList.end() && i < RESULTS_PER_PAGE; ++iter) {
             cout << "* " << left
                  << setw(wTitle) << (*iter)->getTitle().substr(0, wTitle-1)
                  << setw(wIsbn) << (*iter)->getIsbn()
@@ -129,7 +130,7 @@ void repListing(orderedLinkedList<bookType*> &masterList) {
 // shows summary of each book's title, isbn, qty, and wholesale value
 void repWholesale(orderedLinkedList<bookType*> &masterList) {
     int page = 1;
-    int maxPages = bookType::getBookCount() / RESULTS_PER_PAGE;
+    int maxPages = round((float)bookType::getBookCount() / (float)RESULTS_PER_PAGE);
     int i;
     bool exitmenu = false;
     linkedListIterator<bookType*> *pages = new linkedListIterator<bookType*>[maxPages]; // dynamic array of pages
@@ -170,7 +171,7 @@ void repWholesale(orderedLinkedList<bookType*> &masterList) {
         cout << setfill(' ');
         // table body
         i = 0;
-        for (iter = pages[page]; iter != masterList.end() && i < RESULTS_PER_PAGE; ++iter) {
+        for (iter = pages[page-1]; iter != masterList.end() && i < RESULTS_PER_PAGE; ++iter) {
             cout << "* " << left
                  << setw(repTitle) << (*iter)->getTitle().substr(0, repTitle-1)<< setw(repSpacing) << ' '
                  << setw(wIsbn) << (*iter)->getIsbn()<< setw(repSpacing) << ' '
@@ -203,7 +204,7 @@ void repWholesale(orderedLinkedList<bookType*> &masterList) {
 // shows summary of each book's title, isbn, qty, and retail value
 void repRetail(orderedLinkedList<bookType*> &masterList) {
     int page = 1;
-    int maxPages = bookType::getBookCount() / RESULTS_PER_PAGE;
+    int maxPages = round((float)bookType::getBookCount() / (float)RESULTS_PER_PAGE);
     int i;
     bool exitmenu = false;
     linkedListIterator<bookType*> *pages = new linkedListIterator<bookType*>[maxPages]; // dynamic array of pages
@@ -244,7 +245,7 @@ void repRetail(orderedLinkedList<bookType*> &masterList) {
         cout << setfill(' ');
         // table body
         i = 0;
-        for (iter = pages[page]; iter != masterList.end() && i < RESULTS_PER_PAGE; ++iter) {
+        for (iter = pages[page-1]; iter != masterList.end() && i < RESULTS_PER_PAGE; ++iter) {
             cout << "* " << left
                  << setw(repTitle) << (*iter)->getTitle().substr(0, repTitle-1)<< setw(repSpacing) << ' '
                  << setw(wIsbn) << (*iter)->getIsbn()<< setw(repSpacing) << ' '
@@ -280,7 +281,7 @@ void repCost(orderedLinkedList<bookType*> &masterList) {
 
 void repQty(orderedLinkedList<bookType*> &masterList) {
     int page = 1;
-    int maxPages = bookType::getBookCount() / RESULTS_PER_PAGE;
+    int maxPages = round((float)bookType::getBookCount() / (float)RESULTS_PER_PAGE);
     int i;
     bool exitmenu = false;
     cout << left << fixed << setprecision(2);
@@ -323,7 +324,7 @@ void repQty(orderedLinkedList<bookType*> &masterList) {
         cout << setfill(' ');
         // table body
         i = 0;
-        for (iter = pages[page]; iter != qtyList.end() && i < RESULTS_PER_PAGE; ++iter) {
+        for (iter = pages[page-1]; iter != qtyList.end() && i < RESULTS_PER_PAGE; ++iter) {
             cout << "* " << left
                  << setw(repTitle) << (*iter)->getTitle().substr(0, repTitle-1)<< setw(repSpacing) << ' '
                  << setw(wIsbn) << (*iter)->getIsbn()<< setw(repSpacing) << ' '

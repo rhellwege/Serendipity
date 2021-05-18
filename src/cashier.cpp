@@ -34,7 +34,7 @@ void cashier(orderedLinkedList<bookType*> &masterList) {
 
      system("clear");
      bool addMore = false;
-     bookType* buyBook = nullptr;
+     linkedListIterator<bookType*> buyBook;
      float subtotal = 0.0f;
      float sales = 0.0f;
      char choice;
@@ -45,36 +45,40 @@ void cashier(orderedLinkedList<bookType*> &masterList) {
      int orders = 0;
      float grandTotal = 0.0f;
      float grandTaxes = 0.0f;
-     int i;
-
+     int i = 0;
+     for (i = 0; i < bookType::getBookCount(); i++) {
+          shoppingCart[i] = 0;
+     }
      do {
           qtyToPurchase = 0;
           system("clear");
           
-          buyBook = *lookupBook(masterList);
+          buyBook = lookupBook(masterList);
           while (buyBook == nullptr)  { // keep resetting until the book is found, or the user decides to exit.
                system("clear");
                cout << "Couldn't find that item." << endl;
                cout << "Try again? (y/n): ";
                cin >> choice;
                if (tolower(choice) == 'n') return; // the user wants to exit, so return to parent menu.
-               buyBook = *lookupBook(masterList);
+               buyBook = lookupBook(masterList);
           }
           // get the buy index
           i = 0;
           for (iter = masterList.begin(); iter != masterList.end(); ++iter) {
-               if (buyBook == *iter) {
+               if (*buyBook == *iter) {
                     buyIndex = i;
                     break;
                }
                i++;
           }
+          //cout << "buy index: " << buyIndex << endl;
+          //wait();
           system("clear");
 
           do { // buy prompt
-               cout << "How many orders of " << buyBook->getTitle() <<endl
+               cout << "How many orders of " << (*buyBook)->getTitle() <<endl
                << "would you like to buy (" 
-               << buyBook->getQty()<< " books on hand, " <<  shoppingCart[buyIndex] << " in shopping cart): ";
+               << (*buyBook)->getQty() << " books on hand, " <<  shoppingCart[buyIndex] << " in shopping cart): ";
                cin >> qtyToPurchase;
                if (qtyToPurchase < 0) {
                     cout << "You cannot buy negative books, try again." << endl;
@@ -83,13 +87,13 @@ void cashier(orderedLinkedList<bookType*> &masterList) {
                     system("clear");
                     continue;
                }
-               if (qtyToPurchase + shoppingCart[buyIndex] > buyBook->getQty()) {
-                    cout << "You cannot buy more than " << buyBook->getQty() << " orders of that book, try again." << endl;
+               if (qtyToPurchase + shoppingCart[buyIndex] > (*buyBook)->getQty()) {
+                    cout << "You cannot buy more than " << (*buyBook)->getQty() << " orders of that book, try again." << endl;
                     qtyToPurchase = 0;
                     wait();
                     system("clear");
                }
-          } while (qtyToPurchase > buyBook->getQty() || qtyToPurchase < 0);
+          } while (qtyToPurchase > (*buyBook)->getQty() || qtyToPurchase < 0);
 
           shoppingCart[buyIndex] += qtyToPurchase; // add however many items the user requested to the shopping cart
           system("clear");
@@ -172,4 +176,5 @@ void cashier(orderedLinkedList<bookType*> &masterList) {
           }
      }
      delete[] shoppingCart;
+     
 } // after confirm purchase, add a prompt asking another time.

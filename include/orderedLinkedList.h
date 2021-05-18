@@ -196,6 +196,7 @@ void orderedLinkedList<Type>::deleteNode(const Type& deleteItem)
                 cout << "The item to be deleted is not in the "
                      << "list." << endl;
     }
+    delete deleteItem;
 }//end deleteNode
 
 

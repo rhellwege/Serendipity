@@ -48,22 +48,21 @@ linkedListIterator<bookType*> lookupBook(orderedLinkedList<bookType*> &masterLis
                 return iter; // exit out of lookupbook if the user found what they were looking for and dont continue the loop.
         }
     }
-    return iter;
+    return nullptr;
 }
 
 void deleteBook(orderedLinkedList<bookType*> &masterList) {
-    bookType* deleteBook = *lookupBook(masterList);
+    linkedListIterator<bookType*> deleteBook = lookupBook(masterList);
     char choice;
     if (deleteBook == nullptr) {
         cout << "Couldn't find that item. Try again." << endl;
         wait();
         return;
     }
-    // swap with last element
     cout << "WARNING: You are about to delete a record, are you sure you want to do that? (y/n): ";
     cin >> choice;
     if (tolower(choice) == 'y') { // if confirmed
-        masterList.deleteNode(deleteBook); // call delete node method with found item.
+        masterList.deleteNode(*deleteBook); // call delete node method with found item.
     }
 }
 
@@ -73,7 +72,7 @@ void deleteBook(orderedLinkedList<bookType*> &masterList) {
 void invmenu(orderedLinkedList<bookType*> &masterList) {
     char choice;
     bool exitmenu = false;
-    bookType* record;
+    linkedListIterator<bookType*> record;
     
     do {
         system("clear");
@@ -92,7 +91,7 @@ void invmenu(orderedLinkedList<bookType*> &masterList) {
         switch (choice) {
             case '1':
                 if (bookType::getBookCount() > 0) {
-                    record = *lookupBook(masterList);
+                    record = lookupBook(masterList);
                     if (record == nullptr) {
                         system("clear");
                         cout << "Record not found." << endl;
