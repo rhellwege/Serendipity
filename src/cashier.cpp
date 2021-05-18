@@ -39,30 +39,42 @@ void cashier(orderedLinkedList<bookType*> &masterList) {
      float sales = 0.0f;
      char choice;
      int qtyToPurchase = 0;
-     orderType shoppingCart[bookType::getBookCount()];
+     int buyIndex = 0;
+     int *shoppingCart = new int[bookType::getBookCount()];
+     linkedListIterator<bookType*> iter;
      int orders = 0;
      float grandTotal = 0.0f;
      float grandTaxes = 0.0f;
+     int i;
 
      do {
           qtyToPurchase = 0;
           system("clear");
           
-          buyBook = lookupBook(books);
+          buyBook = *lookupBook(masterList);
           while (buyBook == nullptr)  { // keep resetting until the book is found, or the user decides to exit.
                system("clear");
                cout << "Couldn't find that item." << endl;
                cout << "Try again? (y/n): ";
                cin >> choice;
                if (tolower(choice) == 'n') return; // the user wants to exit, so return to parent menu.
-               buyBook = lookupBook(books);
+               buyBook = *lookupBook(masterList);
+          }
+          // get the buy index
+          i = 0;
+          for (iter = masterList.begin(); iter != masterList.end(); ++iter) {
+               if (buyBook == *iter) {
+                    buyIndex = i;
+                    break;
+               }
+               i++;
           }
           system("clear");
 
           do { // buy prompt
                cout << "How many orders of " << buyBook->getTitle() <<endl
                << "would you like to buy (" 
-               << buyBook->getQty()<< " books on hand, " <<  shoppingCart[buyBook] << " in shopping cart): ";
+               << buyBook->getQty()<< " books on hand, " <<  shoppingCart[buyIndex] << " in shopping cart): ";
                cin >> qtyToPurchase;
                if (qtyToPurchase < 0) {
                     cout << "You cannot buy negative books, try again." << endl;
@@ -71,7 +83,7 @@ void cashier(orderedLinkedList<bookType*> &masterList) {
                     system("clear");
                     continue;
                }
-               if (qtyToPurchase + shoppingCart[buyBook] > buyBook->getQty()) {
+               if (qtyToPurchase + shoppingCart[buyIndex] > buyBook->getQty()) {
                     cout << "You cannot buy more than " << buyBook->getQty() << " orders of that book, try again." << endl;
                     qtyToPurchase = 0;
                     wait();
@@ -79,7 +91,7 @@ void cashier(orderedLinkedList<bookType*> &masterList) {
                }
           } while (qtyToPurchase > buyBook->getQty() || qtyToPurchase < 0);
 
-          shoppingCart[buyBook] += qtyToPurchase; // add however many items the user requested to the shopping cart
+          shoppingCart[buyIndex] += qtyToPurchase; // add however many items the user requested to the shopping cart
           system("clear");
           cout << "Would you like to add another book to this purchase? (y/n): ";
           cin >> choice;
@@ -108,18 +120,21 @@ void cashier(orderedLinkedList<bookType*> &masterList) {
      cout << setfill('-') << setw(wQty+wIsbn+wTitle+wPrice+wTotal) << '\n';
      cout << setfill(' ') << '\n';
 
-     for (int i = 0; i < bookType::getBookCount(); i++) { //iterate through the shopping cart
-          if (shoppingCart[i] == 0) // user did not purchase this book, don't care about printing
+     i = 0;
+     for (iter = masterList.begin(); iter != masterList.end(); ++iter) { //iterate through the shopping cart
+          if (shoppingCart[i] == 0) { // user did not purchase this book, don't care about printing
+               i++;
                continue;
+          } 
           
-          subtotal = (float)shoppingCart[i] *(float)books[i]->getRetail();
+          subtotal = (float)shoppingCart[i] *(float)(*iter)->getRetail();
      
           //output transaction table:
           cout << left << setw(wQty) << shoppingCart[i] 
-               << left << setw(wIsbn) << books[i]->getIsbn() 
-               << left << setw(wTitle) << books[i]->getTitle().substr(0,wTitle-5) 
+               << left << setw(wIsbn) << (*iter)->getIsbn() 
+               << left << setw(wTitle) << (*iter)->getTitle().substr(0,wTitle-5) 
                << left << setw(2) << "$ " 
-               << setw(wPrice-2) << fixed << setprecision(2) << setw(6) << right << books[i]->getRetail() 
+               << setw(wPrice-2) << fixed << setprecision(2) << setw(6) << right << (*iter)->getRetail() 
                << setw(11) << " "
                << left << setw(2) << "$ "
                << fixed << setprecision(2) << setw(6) << right << subtotal;
@@ -128,6 +143,7 @@ void cashier(orderedLinkedList<bookType*> &masterList) {
           cout << endl;
           grandTotal+=subtotal;
           grandTaxes += TAX_RATE*subtotal;
+          i++;
      }
      sales = grandTotal * TAX_RATE;
      cout << endl;
@@ -149,8 +165,11 @@ void cashier(orderedLinkedList<bookType*> &masterList) {
           confirmPurchase = true;
 
      if (confirmPurchase) { // decrease the quantities of the books we just bought if the user confirmed the purchase
-          for (int i = 0; i < bookType::getBookCount(); i++) {
-               books[i]->setQty(books[i]->getQty() - shoppingCart[i]);
+          i = 0;
+          for (iter = masterList.begin(); iter != masterList.end(); ++iter) {
+               (*iter)->setQty((*iter)->getQty() - shoppingCart[i]);
+               i++;
           }
      }
+     delete[] shoppingCart;
 } // after confirm purchase, add a prompt asking another time.

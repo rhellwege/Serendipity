@@ -48,7 +48,7 @@ linkedListIterator<bookType*> lookupBook(orderedLinkedList<bookType*> &masterLis
                 return iter; // exit out of lookupbook if the user found what they were looking for and dont continue the loop.
         }
     }
-    return nullptr;
+    return iter;
 }
 
 void deleteBook(orderedLinkedList<bookType*> &masterList) {

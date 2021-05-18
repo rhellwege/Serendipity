@@ -35,7 +35,7 @@ int main() {
         cin >> choice;
         switch (choice) {
             case '1':
-                //cashier(masterList);
+                cashier(masterList);
                 break;
             case '2':
                 invmenu(masterList);
