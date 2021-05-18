@@ -1,5 +1,6 @@
 #ifndef SERENDIPITY_H
 #define SERENDIPITY_H
+#include "orderedLinkedList.h"
 #include "bookType.h"
 #include "templates.hpp"
 #include <iostream>
@@ -11,23 +12,23 @@ using namespace std;
 const int DBSIZE = 20;
 
 // cashier
-void cashier(bookType* books[]);
+void cashier(orderedLinkedList<bookType*> &masterList);
 
 // invmenu:
-void invmenu(bookType* books[]);
-int lookupBook(bookType* books[]);
-void addBook(bookType* books[]);
-void editBook(bookType* books[]);
-void deleteBook(bookType* books[]);
+void invmenu(orderedLinkedList<bookType*> &masterList);
+linkedListIterator<bookType*> lookupBook(orderedLinkedList<bookType*> &masterList);
+void addBook(orderedLinkedList<bookType*> &masterList);
+void editBook(orderedLinkedList<bookType*> &masterList);
+void deleteBook(orderedLinkedList<bookType*> &masterList);
 
 // reports:
-void reports(bookType* books[]);
-void repListing(bookType* books[]);
-void repWholesale(bookType* books[]); 
-void repRetail(bookType* books[]); 
-void repCost(bookType* books[]); 
-void repQty(bookType* books[]); 
-void repAge(bookType* books[]); 
+void reports(orderedLinkedList<bookType*> &masterList);
+void repListing(orderedLinkedList<bookType*> &masterList);
+void repWholesale(orderedLinkedList<bookType*> &masterList); 
+void repRetail(orderedLinkedList<bookType*> &masterList); 
+void repCost(orderedLinkedList<bookType*> &masterList); 
+void repQty(orderedLinkedList<bookType*> &masterList); 
+void repAge(orderedLinkedList<bookType*> &masterList); 
 
 // utils:
 #define K_ESC -1
@@ -45,4 +46,5 @@ int kbhit();
 void ruler();
 bool searchInsensitive(const string& src, const string& substr);
 string get_date();
+bool dateIsLess(string lhs, string rhs);
 #endif

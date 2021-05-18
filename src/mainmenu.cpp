@@ -16,7 +16,7 @@
 #include <string>
 
 int main() {
-    bookType* books[DBSIZE];
+    orderedLinkedList<bookType*> masterList;
     char choice;
     bool exitmenu = false;
     do {
@@ -35,13 +35,13 @@ int main() {
         cin >> choice;
         switch (choice) {
             case '1':
-                cashier(books);
+                //cashier(masterList);
                 break;
             case '2':
-                invmenu(books);
+                invmenu(masterList);
                 break;
             case '3':
-                reports(books);
+                reports(masterList);
                 break;
             case '4':
                 exit(0);

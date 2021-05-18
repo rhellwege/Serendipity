@@ -15,11 +15,11 @@
 // Function: lookupBook - allow the user to search through the database according to publisher, author, or title
 // pre-condition: navigated to from invmenu, at least 1 record added, all parallel arrays are stored correctly and passed
 // post-condition: bookinfo called on the search results.
-int lookupBook(bookType* books[]) {
+linkedListIterator<bookType*> lookupBook(orderedLinkedList<bookType*> &masterList) {
     string searchTerm;
-    int i;
+    linkedListIterator<bookType*> iter;
     if (bookType::getBookCount() == 0)
-        return -1;
+        return nullptr;
 
     system("clear");
     cout << "---------------------------------------------" << endl;
@@ -32,29 +32,29 @@ int lookupBook(bookType* books[]) {
     cin.ignore();
     getline(cin, searchTerm);
     // perform the search:
-    for (i = 0; i < bookType::getBookCount(); i++) {
+    for (iter = masterList.begin(); iter != masterList.end(); ++iter) {
         if (
-            searchInsensitive(books[i]->getTitle(), searchTerm) || 
-            searchInsensitive(books[i]->getAuthor(), searchTerm) || 
-            searchInsensitive(books[i]->getPublisher(), searchTerm)
+            searchInsensitive((*iter)->getTitle(), searchTerm) || 
+            searchInsensitive((*iter)->getAuthor(), searchTerm) || 
+            searchInsensitive((*iter)->getPublisher(), searchTerm)
         ) { // if the title contains the substring searchTerm (case insensitive)
             char choice;            
             system("clear");
             //books[i]->print();
-            cout << *books[i]; // output stream overloaded.
+            cout << **iter; // output stream overloaded.
             cout << "\nSelect this item? (y/n): ";
             cin >> choice;
             if (tolower(choice) == 'y')
-                return i; // exit out of lookupbook if the user found what they were looking for and dont continue the loop.
+                return iter; // exit out of lookupbook if the user found what they were looking for and dont continue the loop.
         }
     }
-    return -1;
+    return nullptr;
 }
 
-void deleteBook(bookType* books[]) {
-    int deleteIndex = lookupBook(books);
+void deleteBook(orderedLinkedList<bookType*> &masterList) {
+    bookType* deleteBook = *lookupBook(masterList);
     char choice;
-    if (deleteIndex == -1) {
+    if (deleteBook == nullptr) {
         cout << "Couldn't find that item. Try again." << endl;
         wait();
         return;
@@ -63,19 +63,17 @@ void deleteBook(bookType* books[]) {
     cout << "WARNING: You are about to delete a record, are you sure you want to do that? (y/n): ";
     cin >> choice;
     if (tolower(choice) == 'y') { // if confirmed
-        delete books[deleteIndex]; // set the book pointer to zero, and free memory
-        books[deleteIndex] = books[bookType::getBookCount()-1]; // switch the last book that was added with what we are deleting, and make that spot inaccessable
-        //bookType::decBookCount();
+        masterList.deleteNode(deleteBook); // call delete node method with found item.
     }
 }
 
 // Function: invmenu - allow the user to use submomdules related to inventory
 // pre-condition: navigated to from mainmenu.
 // post-condition: navigation to a submenu.
-void invmenu(bookType* books[]) {
+void invmenu(orderedLinkedList<bookType*> &masterList) {
     char choice;
     bool exitmenu = false;
-    int recordIndex;
+    bookType* record;
     
     do {
         system("clear");
@@ -94,8 +92,8 @@ void invmenu(bookType* books[]) {
         switch (choice) {
             case '1':
                 if (bookType::getBookCount() > 0) {
-                    recordIndex = lookupBook(books);
-                    if (recordIndex == -1) {
+                    record = *lookupBook(masterList);
+                    if (record == nullptr) {
                         system("clear");
                         cout << "Record not found." << endl;
                         wait();
@@ -108,17 +106,17 @@ void invmenu(bookType* books[]) {
                 }
                 break;
             case '2':
-                if (bookType::getBookCount() < DBSIZE) 
-                    addBook(books);
-                else {
-                    system("clear");
-                    cout << "Database is full, cannot add any more books." << endl;
-                    wait();
-                }
+                //if (bookType::getBookCount() < DBSIZE) 
+                    addBook(masterList);
+                //else {
+                //    system("clear");
+                //    cout << "Database is full, cannot add any more books." << endl;
+                //    wait();
+                //}
                 break;
             case '3':
                 if (bookType::getBookCount() > 0)
-                    editBook(books);
+                    editBook(masterList);
                 else {
                     system("clear");
                     cout << "Database is empty, cannot edit any records." << endl;
@@ -127,7 +125,7 @@ void invmenu(bookType* books[]) {
                 break;
              case '4':
                 if (bookType::getBookCount() > 0)
-                    deleteBook(books);
+                    deleteBook(masterList);
                 else {
                     system("clear");
                     cout << "Database is empty, cannot delete any records." << endl;

@@ -21,7 +21,7 @@ const int wQty = 6, wIsbn = 14, wTitle = 27, wPrice = 19, wTotal = 18, spacing =
 // Function: cashier - display process a transaction
 // pre-condition: navigated to from mainmenu
 // post-condition: output transaction information.
-void cashier(bookType* books[]) {
+void cashier(orderedLinkedList<bookType*> &masterList) {
      const float TAX_RATE = 0.06;
      bool confirmPurchase = false;
 
@@ -34,38 +34,35 @@ void cashier(bookType* books[]) {
 
      system("clear");
      bool addMore = false;
-     int buyIndex = 0;
+     bookType* buyBook = nullptr;
      float subtotal = 0.0f;
      float sales = 0.0f;
      char choice;
      int qtyToPurchase = 0;
-     int shoppingCart[bookType::getBookCount()];
+     orderType shoppingCart[bookType::getBookCount()];
+     int orders = 0;
      float grandTotal = 0.0f;
      float grandTaxes = 0.0f;
-
-     for (int i = 0; i < bookType::getBookCount(); i++) {
-          shoppingCart[i] = 0; // make sure this array is set to zero so garbage isnt added
-     }
 
      do {
           qtyToPurchase = 0;
           system("clear");
           
-          buyIndex = lookupBook(books);
-          while (buyIndex == -1)  { // keep resetting until the book is found, or the user decides to exit.
+          buyBook = lookupBook(books);
+          while (buyBook == nullptr)  { // keep resetting until the book is found, or the user decides to exit.
                system("clear");
                cout << "Couldn't find that item." << endl;
                cout << "Try again? (y/n): ";
                cin >> choice;
                if (tolower(choice) == 'n') return; // the user wants to exit, so return to parent menu.
-               buyIndex = lookupBook(books);
+               buyBook = lookupBook(books);
           }
           system("clear");
 
           do { // buy prompt
-               cout << "How many orders of " << books[buyIndex]->getTitle() <<endl
+               cout << "How many orders of " << buyBook->getTitle() <<endl
                << "would you like to buy (" 
-               << books[buyIndex]->getQty()<< " books on hand, " <<  shoppingCart[buyIndex] << " in shopping cart): ";
+               << buyBook->getQty()<< " books on hand, " <<  shoppingCart[buyBook] << " in shopping cart): ";
                cin >> qtyToPurchase;
                if (qtyToPurchase < 0) {
                     cout << "You cannot buy negative books, try again." << endl;
@@ -74,15 +71,15 @@ void cashier(bookType* books[]) {
                     system("clear");
                     continue;
                }
-               if (qtyToPurchase + shoppingCart[buyIndex] > books[buyIndex]->getQty()) {
-                    cout << "You cannot buy more than " << books[buyIndex]->getQty() << " orders of that book, try again." << endl;
+               if (qtyToPurchase + shoppingCart[buyBook] > buyBook->getQty()) {
+                    cout << "You cannot buy more than " << buyBook->getQty() << " orders of that book, try again." << endl;
                     qtyToPurchase = 0;
                     wait();
                     system("clear");
                }
-          } while (qtyToPurchase > books[buyIndex]->getQty() || qtyToPurchase < 0);
+          } while (qtyToPurchase > buyBook->getQty() || qtyToPurchase < 0);
 
-          shoppingCart[buyIndex] += qtyToPurchase; // add however many items the user requested to the shopping cart
+          shoppingCart[buyBook] += qtyToPurchase; // add however many items the user requested to the shopping cart
           system("clear");
           cout << "Would you like to add another book to this purchase? (y/n): ";
           cin >> choice;

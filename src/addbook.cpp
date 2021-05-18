@@ -3,7 +3,7 @@
 // Function: bookInfo - sets up a prompt to allow the user to add a record to the database
 // pre-condigion: navigated to from invmenu, all appropriate parallel arrays declared and passed from main.
 // post-condition: records added to data base.
-void addBook(bookType* books[]) {
+void addBook(orderedLinkedList<bookType*> &masterList) {
     char choice;
     bool exitmenu = false;
     bool savedWork = true;
@@ -16,10 +16,10 @@ void addBook(bookType* books[]) {
     int    tmpQty       = 0;
     float  tmpWholesale = 0.0f;
     float  tmpRetail    = 0.0f;
-
+    bookType::compare = COMPARE_TITLE; // store alphabetically
     do {
-        if (bookType::getBookCount() >= DBSIZE)
-            return;
+        //if (bookType::getBookCount() >= DBSIZE)
+        //    return;
         system("clear");
         cout << "---------------------------------------------------------------------------" << endl;
         cout << "|                         Serendipity Booksellers                         |" << endl;
@@ -92,19 +92,20 @@ void addBook(bookType* books[]) {
                 cin >> tmpRetail;
                 break;
             case '9': {// save to database
-                if (bookType::getBookCount() == DBSIZE) {
-                    cout << "Database is full, you must delete a record if you would like to add a record." << endl;
-                    wait();
-                    break;
-                }
-                int ind = bookType::getBookCount();
-                books[ind] = new bookType(
-                    tmpTitle, tmpIsbn, tmpAuthor, 
-                    tmpPublisher, tmpDate, tmpQty, 
-                    tmpWholesale, tmpRetail
+                //if (bookType::getBookCount() == DBSIZE) {
+                //    cout << "Database is full, you must delete a record if you would like to add a record." << endl;
+                //    wait();
+                //    break;
+                //}
+                
+                masterList.insert( 
+                    new bookType(
+                        tmpTitle, tmpIsbn, tmpAuthor, 
+                        tmpPublisher, tmpDate, tmpQty, 
+                        tmpWholesale, tmpRetail
+                    )
                 ); 
 
-                //bookType::incBookCount();
                 savedWork = true;
                 
                 tmpIsbn      = "*EMPTY*";

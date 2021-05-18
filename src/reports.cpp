@@ -8,6 +8,8 @@ const int wTitle = 28, wIsbn = 14, wAuthor = 15, wPublisher = 15, wDate = 11, wQ
 const int repTitle = 40;
 const int repSpacing = 12;
 
+// idea for pagination: array of nodes, index represents page number, traverse from that node on to have pages
+
 // helper function to make code smaller, changes the page number, or can exit the menu
 void navigation(int maxPages, int& page, bool& exitmenu) {
     int toPage;
@@ -44,11 +46,23 @@ void navigation(int maxPages, int& page, bool& exitmenu) {
 }
 
 // summary of every listing, displaying every parameter of each book.
-void repListing(bookType* books[]) {
+void repListing(orderedLinkedList<bookType*> &masterList) {
     int page = 1;
     int maxPages = bookType::getBookCount() / RESULTS_PER_PAGE;
     int i;
     bool exitmenu = false;
+    linkedListIterator<bookType*> *pages = new linkedListIterator<bookType*>[maxPages]; // dynamic array of pages
+    linkedListIterator<bookType*> iter ;
+    i = 0;
+    int j = 0;
+    for (iter = masterList.begin(); iter != masterList.end(); ++iter) { // collect pages
+        if (i % RESULTS_PER_PAGE == 0) {
+            pages[j] = iter;
+            j++;
+        }
+        i++;
+    }
+    
     do {
         system("clear");
         cout << "***************************************************************************************************************************" << endl;
@@ -83,41 +97,52 @@ void repListing(bookType* books[]) {
              << "  *" << endl;
         cout << setfill(' ');
         // table body
-        for (i = 0; i < RESULTS_PER_PAGE; i++) {
-            if (i >= bookType::getBookCount())
-                break;
-            int index = i + (page-1)*RESULTS_PER_PAGE;
+        i = 0;
+        for (iter = pages[page]; iter != masterList.end() && i < RESULTS_PER_PAGE; ++iter) {
             cout << "* " << left
-                 << setw(wTitle) << books[index]->getTitle().substr(0, wTitle-1)
-                 << setw(wIsbn) << books[index]->getIsbn()
-                 << setw(wAuthor) << books[index]->getAuthor().substr(0, wAuthor-1)
-                 << setw(wPublisher) << books[index]->getPublisher().substr(0, wPublisher-1)
-                 << setw(wDate) << books[index]->getDateAdded()
+                 << setw(wTitle) << (*iter)->getTitle().substr(0, wTitle-1)
+                 << setw(wIsbn) << (*iter)->getIsbn()
+                 << setw(wAuthor) << (*iter)->getAuthor().substr(0, wAuthor-1)
+                 << setw(wPublisher) << (*iter)->getPublisher().substr(0, wPublisher-1)
+                 << setw(wDate) << (*iter)->getDateAdded()
                  << right
-                 << setw(wQty-1) << books[index]->getQty()
+                 << setw(wQty-1) << (*iter)->getQty()
                  << left  << " $"
                  << setfill('.') << right
-                 << setw(wWhole-2) << books[index]->getWholesale()
+                 << setw(wWhole-2) << (*iter)->getWholesale()
                  << setfill(' ')
                  << left  << " $"
                  << setfill('.') << right
-                 << setw(wRetail-2) << books[index]->getRetail()
+                 << setw(wRetail-2) << (*iter)->getRetail()
                  << setfill(' ')
                  << "  *" << endl;
             cout << "*                                                                                                                         *" << endl;
+            i++;
         }
         cout << "***************************************************************************************************************************" << endl;
         // handle navigation:
         navigation(maxPages, page, exitmenu);
     } while (!exitmenu);
+    delete[] pages;
 }
 
 // shows summary of each book's title, isbn, qty, and wholesale value
-void repWholesale(bookType* books[]) {
+void repWholesale(orderedLinkedList<bookType*> &masterList) {
     int page = 1;
     int maxPages = bookType::getBookCount() / RESULTS_PER_PAGE;
     int i;
     bool exitmenu = false;
+    linkedListIterator<bookType*> *pages = new linkedListIterator<bookType*>[maxPages]; // dynamic array of pages
+    linkedListIterator<bookType*> iter ;
+    i = 0;
+    int j = 0;
+    for (iter = masterList.begin(); iter != masterList.end(); ++iter) { // collect pages
+        if (i % RESULTS_PER_PAGE == 0) {
+            pages[j] = iter;
+            j++;
+        }
+        i++;
+    }
     cout << left << fixed << setprecision(2);
     do {
         system("clear");
@@ -144,25 +169,24 @@ void repWholesale(bookType* books[]) {
              << "     *" << endl;
         cout << setfill(' ');
         // table body
-        for (i = 0; i < RESULTS_PER_PAGE; i++) {
-            if (i >= bookType::getBookCount())
-                break;
-            int index = i + (page-1)*RESULTS_PER_PAGE;
+        i = 0;
+        for (iter = pages[page]; iter != masterList.end() && i < RESULTS_PER_PAGE; ++iter) {
             cout << "* " << left
-                 << setw(repTitle) << books[index]->getTitle().substr(0, repTitle-1)<< setw(repSpacing) << ' '
-                 << setw(wIsbn) << books[index]->getIsbn()<< setw(repSpacing) << ' '
+                 << setw(repTitle) << (*iter)->getTitle().substr(0, repTitle-1)<< setw(repSpacing) << ' '
+                 << setw(wIsbn) << (*iter)->getIsbn()<< setw(repSpacing) << ' '
                  << right
-                 << setw(wQty-1) << books[index]->getQty()<< setw(repSpacing+1) << ' '
+                 << setw(wQty-1) << (*iter)->getQty()<< setw(repSpacing+1) << ' '
                  << left << "$" << setfill('.') << right
-                 << setw(wWhole-2) << books[index]->getWholesale()
+                 << setw(wWhole-2) << (*iter)->getWholesale()
                  << setfill(' ')
                  << "     *" << endl;
             cout << "*                                                                                                                      *" << endl;
+            i++;
         }
         // display total:
         float total = 0;
-        for (int i = 0; i < bookType::getBookCount(); i++) {
-            total += books[i]->getWholesale() * books[i]->getQty();
+        for (iter = masterList.begin(); iter != masterList.end(); ++iter) {
+            total += (*iter)->getWholesale() * (*iter)->getQty();
         }
         //cout << "*                                                                                               Total: " << total << " *" << endl;
         //cout << "* " << setw((repSpacing*3)+wTitle+wIsbn+wQty-1) << right  << "Total:" << setw(wWhole+repSpacing) << total << "        *" << endl;
@@ -173,14 +197,26 @@ void repWholesale(bookType* books[]) {
         // handle navigation:
         navigation(maxPages, page, exitmenu);
     } while(!exitmenu);
+    delete[] pages;
 }
 
 // shows summary of each book's title, isbn, qty, and retail value
-void repRetail(bookType* books[]) {
+void repRetail(orderedLinkedList<bookType*> &masterList) {
     int page = 1;
     int maxPages = bookType::getBookCount() / RESULTS_PER_PAGE;
     int i;
     bool exitmenu = false;
+    linkedListIterator<bookType*> *pages = new linkedListIterator<bookType*>[maxPages]; // dynamic array of pages
+    linkedListIterator<bookType*> iter ;
+    i = 0;
+    int j = 0;
+    for (iter = masterList.begin(); iter != masterList.end(); ++iter) { // collect pages
+        if (i % RESULTS_PER_PAGE == 0) {
+            pages[j] = iter;
+            j++;
+        }
+        i++;
+    }
     cout << left << fixed << setprecision(2);
     do {
         system("clear");
@@ -207,25 +243,24 @@ void repRetail(bookType* books[]) {
              << "       *" << endl;
         cout << setfill(' ');
         // table body
-        for (i = 0; i < RESULTS_PER_PAGE; i++) {
-            if (i >= bookType::getBookCount())
-                break;
-            int index = i + (page-1)*RESULTS_PER_PAGE;
+        i = 0;
+        for (iter = pages[page]; iter != masterList.end() && i < RESULTS_PER_PAGE; ++iter) {
             cout << "* " << left
-                 << setw(repTitle) << books[index]->getTitle().substr(0, repTitle-1)<< setw(repSpacing) << ' '
-                 << setw(wIsbn) << books[index]->getIsbn()<< setw(repSpacing) << ' '
+                 << setw(repTitle) << (*iter)->getTitle().substr(0, repTitle-1)<< setw(repSpacing) << ' '
+                 << setw(wIsbn) << (*iter)->getIsbn()<< setw(repSpacing) << ' '
                  << right
-                 << setw(wQty-1) << books[index]->getQty()<< setw(repSpacing+1) << ' '
+                 << setw(wQty-1) << (*iter)->getQty()<< setw(repSpacing+1) << ' '
                  << left << "$" << setfill('.') << right
-                 << setw(wRetail-2) << books[index]->getRetail()
+                 << setw(wRetail-2) << (*iter)->getRetail()
                  << setfill(' ')
                  << "       *" << endl;
             cout << "*                                                                                                                      *" << endl;
+            i++;
         }
         // display total:
         float total = 0;
-        for (int i = 0; i < bookType::getBookCount(); i++) {
-            total += books[i]->getRetail() * books[i]->getQty();
+        for (iter = masterList.begin(); iter != masterList.end(); ++iter) {
+            total += (*iter)->getRetail() * (*iter)->getQty();
         }
         //cout << "*                                    Total: " << total << "                                                                  *" << endl;
         cout << "* " << setw((repSpacing*3)+wTitle+wIsbn+wQty-1) << right << "Total:" << left
@@ -235,21 +270,36 @@ void repRetail(bookType* books[]) {
         // handle navigation:
         navigation(maxPages, page, exitmenu);
     } while(!exitmenu);
+    delete[] pages;
 }
 
-void repCost(bookType* books[]) {
+void repCost(orderedLinkedList<bookType*> &masterList) {
     cout << "You chose cost."<< endl;
     wait();
 }
 
-void repQty(bookType* books[]) {
+void repQty(orderedLinkedList<bookType*> &masterList) {
     int page = 1;
     int maxPages = bookType::getBookCount() / RESULTS_PER_PAGE;
     int i;
     bool exitmenu = false;
     cout << left << fixed << setprecision(2);
     bookType::compare = COMPARE_QTY; // sort by quantity
-    selectionSort(books, bookType::getBookCount(), false); // sort the array in decending order.
+    orderedLinkedList<bookType*> qtyList;
+    linkedListIterator<bookType*> *pages = new linkedListIterator<bookType*>[maxPages]; // dynamic array of pages
+    linkedListIterator<bookType*> iter;
+    for (iter = masterList.begin(); iter != masterList.end(); ++iter) { // copy to sorted temporary list
+        qtyList.insert(*iter);
+    }
+    i = 0;
+    int j = 0;
+    for (iter = qtyList.begin(); iter != qtyList.end(); ++iter) { // collect pages
+        if (i % RESULTS_PER_PAGE == 0) {
+            pages[j] = iter;
+            j++;
+        }
+        i++;
+    }
     do {
         system("clear");
         cout << "************************************************************************************************************************" << endl;
@@ -272,25 +322,27 @@ void repQty(bookType* books[]) {
              << "                    *" << endl;
         cout << setfill(' ');
         // table body
-        for (i = 0; i < RESULTS_PER_PAGE; i++) {
-            if (i >= bookType::getBookCount())
-                break;
-            int index = i + (page-1)*RESULTS_PER_PAGE;
+        i = 0;
+        for (iter = pages[page]; iter != qtyList.end() && i < RESULTS_PER_PAGE; ++iter) {
             cout << "* " << left
-                 << setw(repTitle) << books[index]->getTitle().substr(0, repTitle-1)<< setw(repSpacing) << ' '
-                 << setw(wIsbn) << books[index]->getIsbn()<< setw(repSpacing) << ' '
+                 << setw(repTitle) << (*iter)->getTitle().substr(0, repTitle-1)<< setw(repSpacing) << ' '
+                 << setw(wIsbn) << (*iter)->getIsbn()<< setw(repSpacing) << ' '
                  << right
-                 << setw(wQty-1) << books[index]->getQty()<< setw(repSpacing+1) << ' '
+                 << setw(wQty-1) << (*iter)->getQty()<< setw(repSpacing+1) << ' '
                  << setfill(' ')
                  << "                   *" << endl;
             cout << "*                                                                                                                      *" << endl;
+            i++;
         }
         cout << "************************************************************************************************************************" << endl;
         navigation(maxPages, page, exitmenu);
     } while(!exitmenu);
+    // destroy templist
+    delete[] pages;
+    qtyList.destroyList();
 }
 
-void repAge(bookType* books[]) {
+void repAge(orderedLinkedList<bookType*> &masterList) {
     cout << "You chose age."<< endl;
     wait();
 }
@@ -298,7 +350,7 @@ void repAge(bookType* books[]) {
 // Function: reports - allows the user to choose a function to display reports
 // pre-condition: navigated to from mainmenu.
 // post-condition: navigation.
-void reports(bookType* books[]) {
+void reports(orderedLinkedList<bookType*> &masterList) {
     char choice;
     bool exitmenu = false;
 
@@ -321,7 +373,7 @@ void reports(bookType* books[]) {
         switch (choice) {
             case '1':
                 if (bookType::getBookCount() > 0)
-                    repListing(books);
+                    repListing(masterList);
                 else {
                     system("clear");
                     cout << "Database is empty, try again after adding records." << endl;
@@ -330,7 +382,7 @@ void reports(bookType* books[]) {
                 break;
             case '2':
                 if (bookType::getBookCount() > 0)
-                    repWholesale(books);
+                    repWholesale(masterList);
                 else {
                     system("clear");
                     cout << "Database is empty, try again after adding records." << endl;
@@ -339,7 +391,7 @@ void reports(bookType* books[]) {
                 break;
             case '3':
                 if (bookType::getBookCount() > 0)
-                    repRetail(books);
+                    repRetail(masterList);
                 else {
                     system("clear");
                     cout << "Database is empty, try again after adding records." << endl;
@@ -348,7 +400,7 @@ void reports(bookType* books[]) {
                 break;
             case '4':
                 if (bookType::getBookCount() > 0)
-                    repQty(books);
+                    repQty(masterList);
                 else {
                     system("clear");
                     cout << "Database is empty, try again after adding records." << endl;
@@ -357,7 +409,7 @@ void reports(bookType* books[]) {
                 break;
             case '5':
                 if (bookType::getBookCount() > 0)
-                    repCost(books);
+                    repCost(masterList);
                 else {
                     system("clear");
                     cout << "Database is empty, try again after adding records." << endl;
@@ -366,7 +418,7 @@ void reports(bookType* books[]) {
                 break;
             case '6':
                 if (bookType::getBookCount() > 0)
-                    repAge(books);
+                    repAge(masterList);
                 else {
                     system("clear");
                     cout << "Database is empty, try again after adding records." << endl;
