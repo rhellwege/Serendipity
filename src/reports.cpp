@@ -2,7 +2,7 @@
 #include <iomanip>
 #include <cmath>
 
-const int RESULTS_PER_PAGE = 10;
+const int RESULTS_PER_PAGE = 20;
 
 // formatting widths
 const int wTitle = 28, wIsbn = 14, wAuthor = 15, wPublisher = 15, wDate = 11, wQty = 8, wWhole = 15, wRetail = 13;
@@ -70,7 +70,7 @@ void repListing(orderedLinkedList<bookType*> &masterList) {
         cout << "*                                               SERENDIPITY BOOKSELLERS                                                   *" << endl;
         cout << "*                                                    REPORT LISTING                                                       *" << endl;
         cout << "*                                                                                                                         *" << endl;
-        cout << "*    DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "           DATABASE SIZE: " << DBSIZE << "            CURRENT BOOK COUNT: " << bookType::getBookCount() << "        *" << endl;
+        cout << "*    DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "                     CURRENT BOOK COUNT: " << bookType::getBookCount() << "                           *" << endl;
         cout << "*                                                                                                                         *" << endl;
         cout << left << fixed << setprecision(2);
         // table heading
@@ -151,7 +151,7 @@ void repWholesale(orderedLinkedList<bookType*> &masterList) {
         cout << "*                                               SERENDIPITY BOOKSELLERS                                                *" << endl;
         cout << "*                                               REPORT WHOLESALE LISTING                                               *" << endl;
         cout << "*                                                                                                                      *" << endl;
-        cout << "*    DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "           DATABASE SIZE: " << DBSIZE << "            CURRENT BOOK COUNT: " << bookType::getBookCount() << "     *" << endl;
+        cout << "*    DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "                     CURRENT BOOK COUNT: " << bookType::getBookCount() << "                           *" << endl;
         cout << "*                                                                                                                      *" << endl;
         // table heading
         cout << "* " << left
@@ -225,7 +225,7 @@ void repRetail(orderedLinkedList<bookType*> &masterList) {
         cout << "*                                               SERENDIPITY BOOKSELLERS                                                *" << endl;
         cout << "*                                                REPORT RETAIL LISTING                                                 *" << endl;
         cout << "*                                                                                                                      *" << endl;
-        cout << "*    DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "           DATABASE SIZE: " << DBSIZE << "            CURRENT BOOK COUNT: " << bookType::getBookCount() << "     *" << endl;
+        cout << "*    DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "                     CURRENT BOOK COUNT: " << bookType::getBookCount() << "                           *" << endl;
         cout << "*                                                                                                                      *" << endl;
         // table heading
         cout << "* " << left
@@ -302,7 +302,7 @@ void repCost(orderedLinkedList<bookType*> &masterList) {
         cout << "*                                               SERENDIPITY BOOKSELLERS                                                *" << endl;
         cout << "*                                                   REPORTS BY COST                                                    *" << endl;
         cout << "*                                                                                                                      *" << endl;
-        cout << "*    DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "           DATABASE SIZE: " << DBSIZE << "            CURRENT BOOK COUNT: " << bookType::getBookCount() << "     *" << endl;
+        cout << "*    DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "                     CURRENT BOOK COUNT: " << bookType::getBookCount() << "                           *" << endl;
         cout << "*                                                                                                                      *" << endl;
         // table heading
         cout << "* " << left
@@ -380,7 +380,7 @@ void repQty(orderedLinkedList<bookType*> &masterList) {
         cout << "*                                               SERENDIPITY BOOKSELLERS                                                *" << endl;
         cout << "*                                                  QUANTITY LISTING                                                    *" << endl;
         cout << "*                                                                                                                      *" << endl;
-        cout << "*    DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "           DATABASE SIZE: " << DBSIZE << "            CURRENT BOOK COUNT: " << bookType::getBookCount() << "     *" << endl;
+        cout << "*    DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "                     CURRENT BOOK COUNT: " << bookType::getBookCount() << "                           *" << endl;
         cout << "*                                                                                                                      *" << endl;
         cout << "* " << left
              << setw(repTitle) << "TITLE" << setw(repSpacing) << ' '
@@ -417,8 +417,71 @@ void repQty(orderedLinkedList<bookType*> &masterList) {
 }
 
 void repAge(orderedLinkedList<bookType*> &masterList) {
-    cout << "You chose age."<< endl;
-    wait();
+    int page = 1;
+    int maxPages = round((float)bookType::getBookCount() / (float)RESULTS_PER_PAGE);
+    int i;
+    bool exitmenu = false;
+    cout << left << fixed << setprecision(2);
+    bookType::compare = COMPARE_DATE; // sort by quantity
+    orderedLinkedList<bookType*> dateList;
+    linkedListIterator<bookType*> *pages = new linkedListIterator<bookType*>[maxPages]; // dynamic array of pages
+    linkedListIterator<bookType*> iter;
+    for (iter = masterList.begin(); iter != masterList.end(); ++iter) { // copy to sorted temporary list
+        dateList.insert(*iter);
+    }
+    i = 0;
+    int j = 0;
+    for (iter = dateList.begin(); iter != dateList.end(); ++iter) { // collect pages
+        if (i % RESULTS_PER_PAGE == 0) {
+            pages[j] = iter;
+            j++;
+        }
+        i++;
+    }
+    do {
+        system("clear");
+        cout << "************************************************************************************************************************" << endl;
+        cout << "*                                               SERENDIPITY BOOKSELLERS                                                *" << endl;
+        cout << "*                                                REPORTS BY DATE ADDED                                                 *" << endl;
+        cout << "*                                                                                                                      *" << endl;
+        cout << "*    DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "                     CURRENT BOOK COUNT: " << bookType::getBookCount() << "                           *" << endl;
+        cout << "*                                                                                                                      *" << endl;
+        cout << "* " << left
+             << setw(repTitle) << "TITLE" << setw(repSpacing) << ' '
+             << setw(wIsbn) << "ISBN" << setw(repSpacing) << ' '
+             << setw(wQty) << "QTY O/H" << setw(repSpacing) << ' '
+             << setw(wDate) << "DATE ADDED" << setw(repSpacing) << ' '
+             << " *" << endl;
+        // lines
+        cout << setfill('-');
+        cout << "*" 
+             << setw(repTitle) << ' ' << setfill(' ') << setw(repSpacing) << ' ' << setfill('-')
+             << setw(wIsbn) << ' ' << setfill(' ') << setw(repSpacing) << ' ' << setfill('-')
+             << setw(wQty) << ' ' << setfill(' ') << setw(repSpacing) << ' ' << setfill('-')
+             << setw(wDate) << ' ' << setfill(' ') << setw(repSpacing) << ' ' << setfill('-')
+             << " *" << endl;
+        cout << setfill(' ');
+        // table body
+        i = 0;
+        for (iter = pages[page-1]; iter != dateList.end() && i < RESULTS_PER_PAGE; ++iter) {
+            cout << "* " << left
+                 << setw(repTitle) << (*iter)->getTitle().substr(0, repTitle-1)<< setw(repSpacing) << ' '
+                 << setw(wIsbn) << (*iter)->getIsbn()<< setw(repSpacing) << ' '
+                 << right
+                 << setw(wQty-1) << (*iter)->getQty()<< setw(repSpacing+1) << ' '
+                 << setfill(' ')
+                 << left 
+                 << setw(wDate) << (*iter)->getDateAdded() << setw(repSpacing) << ' '
+                 << " *" << endl;
+            cout << "*                                                                                                                      *" << endl;
+            i++;
+        }
+        cout << "************************************************************************************************************************" << endl;
+        navigation(maxPages, page, exitmenu);
+    } while(!exitmenu);
+    // destroy templist
+    delete[] pages;
+    dateList.destroyList();
 }
 
 // Function: reports - allows the user to choose a function to display reports

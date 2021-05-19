@@ -10,21 +10,23 @@ bool dateIsLess(string lhs, string rhs) {
     int numMonR;
     int numDayL;
     int numDayR;
-    char yearL[4];
-    char yearR[4];
-    char monL[2];
-    char monR[2];
-    char dayL[2];
-    char dayR[2];
+    char yearL[5];
+    char yearR[5];
+    char monL[3];
+    char monR[3];
+    char dayL[3];
+    char dayR[3];
     int i;
 
     // compare years
     for (i = 0; i < 4; i++) {
         yearL[i] = lhs[i+6];
     }
+    yearL[4] = 0;
     for (i = 0; i < 4; i++) {
         yearR[i] = rhs[i+6];
     }
+    yearR[4] = 0;
     numYearL = atoi(yearL);
     numYearR = atoi(yearR);
     if (numYearL != numYearR)
@@ -34,9 +36,11 @@ bool dateIsLess(string lhs, string rhs) {
     for (i = 0; i < 2; i++) {
         monL[i] = lhs[i];
     }
+    monL[2] = 0;
     for (i = 0; i < 2; i++) {
         monR[i] = rhs[i];
     }
+    monR[2] = 0;
     numMonL = atoi(monL);
     numMonR = atoi(monR);
     if (numMonL != numMonR)
@@ -45,9 +49,11 @@ bool dateIsLess(string lhs, string rhs) {
     for (i = 0; i < 2; i++) {
         dayL[i] = lhs[i+3];
     }
+    dayL[2] = 0;
     for (i = 0; i < 2; i++) {
         dayR[i] = rhs[i+3];
     }
+    dayR[2] = 0;
     numDayL = atoi(dayL);
     numDayR = atoi(dayR);
     if (numDayL != numDayR)
@@ -265,6 +271,9 @@ bool bookType::operator>(const bookType& other) {
         case COMPARE_TITLE:
             return this->getTitle() > other.getTitle();
             break;
+        case COMPARE_DATE:    
+            return !dateIsLess(this->getDateAdded(), other.getDateAdded());
+            break;
         default:
             return false;
             break;
@@ -307,6 +316,9 @@ bool bookType::operator<=(const bookType& other) {
             break;
         case COMPARE_TITLE:
             return this->getTitle() <= other.getTitle();
+            break;
+        case COMPARE_DATE:    
+            return !dateIsLess(this->getDateAdded(), other.getDateAdded());
             break;
         default:
             return false;
