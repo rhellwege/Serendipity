@@ -25,7 +25,7 @@ void addBook(orderedLinkedList<bookType*> &masterList) {
         cout << "|                         Serendipity Booksellers                         |" << endl;
         cout << "|                                 Add Book                                |" << endl;
         cout << "|                                                                         |" << endl;
-        cout << "|                Database Size: " << DBSIZE << "  Current Record Count: " << setw(16) << left << bookType::getBookCount() << "|" << endl;
+        cout << "|                         Current Record Count: " << setw(16) << left << bookType::getBookCount() << "          |" << endl;
         cout << "|                                                                         |" << endl;
         cout << "| [1] Enter Book Title              ->  " << setw(34) << left << tmpTitle.substr(0, 34) << "|" << endl;
         cout << "| [2] Enter ISBN                    ->  " << setw(34) << left << tmpIsbn.substr(0, 34) << "|" << endl;

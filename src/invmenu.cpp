@@ -22,12 +22,12 @@ linkedListIterator<bookType*> lookupBook(orderedLinkedList<bookType*> &masterLis
         return nullptr;
 
     system("clear");
-    cout << "---------------------------------------------" << endl;
-    cout << "|           Serendipity Booksellers         |" << endl;
-    cout << "|                Look Up Book               |" << endl;
-    cout << "|                                           |" << endl;
-    cout << "| There are " << setw(2)  << left << bookType::getBookCount() << " records available to search. |" << endl;
-    cout << "---------------------------------------------" << endl << endl;
+    cout << "----------------------------------------------" << endl;
+    cout << "|           Serendipity Booksellers          |" << endl;
+    cout << "|                Look Up Book                |" << endl;
+    cout << "|                                            |" << endl;
+    cout << "| There are " << setw(3)  << left << bookType::getBookCount() << " records available to search. |" << endl;
+    cout << "----------------------------------------------" << endl << endl;
     cout << "Search: ";
     cin.ignore();
     getline(cin, searchTerm);

@@ -49,7 +49,7 @@ void navigation(int maxPages, int& page, bool& exitmenu) {
 // summary of every listing, displaying every parameter of each book.
 void repListing(orderedLinkedList<bookType*> &masterList) {
     int page = 1;
-    int maxPages = round((float)bookType::getBookCount() / (float)RESULTS_PER_PAGE);
+    int maxPages = ceil((float)bookType::getBookCount() / (float)RESULTS_PER_PAGE);
     int i;
     bool exitmenu = false;
     linkedListIterator<bookType*> *pages = new linkedListIterator<bookType*>[maxPages]; // dynamic array of pages
@@ -70,7 +70,7 @@ void repListing(orderedLinkedList<bookType*> &masterList) {
         cout << "*                                               SERENDIPITY BOOKSELLERS                                                   *" << endl;
         cout << "*                                                    REPORT LISTING                                                       *" << endl;
         cout << "*                                                                                                                         *" << endl;
-        cout << "*    DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "                     CURRENT BOOK COUNT: " << bookType::getBookCount() << "                           *" << endl;
+        cout << "*       DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "                     CURRENT BOOK COUNT: " << bookType::getBookCount() << "                       *" << endl;
         cout << "*                                                                                                                         *" << endl;
         cout << left << fixed << setprecision(2);
         // table heading
@@ -130,7 +130,7 @@ void repListing(orderedLinkedList<bookType*> &masterList) {
 // shows summary of each book's title, isbn, qty, and wholesale value
 void repWholesale(orderedLinkedList<bookType*> &masterList) {
     int page = 1;
-    int maxPages = round((float)bookType::getBookCount() / (float)RESULTS_PER_PAGE);
+    int maxPages = ceil((float)bookType::getBookCount() / (float)RESULTS_PER_PAGE);
     int i;
     bool exitmenu = false;
     linkedListIterator<bookType*> *pages = new linkedListIterator<bookType*>[maxPages]; // dynamic array of pages
@@ -151,7 +151,7 @@ void repWholesale(orderedLinkedList<bookType*> &masterList) {
         cout << "*                                               SERENDIPITY BOOKSELLERS                                                *" << endl;
         cout << "*                                               REPORT WHOLESALE LISTING                                               *" << endl;
         cout << "*                                                                                                                      *" << endl;
-        cout << "*    DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "                     CURRENT BOOK COUNT: " << bookType::getBookCount() << "                           *" << endl;
+        cout << "*       DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "                     CURRENT BOOK COUNT: " << bookType::getBookCount() << "                    *" << endl;
         cout << "*                                                                                                                      *" << endl;
         // table heading
         cout << "* " << left
@@ -204,7 +204,7 @@ void repWholesale(orderedLinkedList<bookType*> &masterList) {
 // shows summary of each book's title, isbn, qty, and retail value
 void repRetail(orderedLinkedList<bookType*> &masterList) {
     int page = 1;
-    int maxPages = round((float)bookType::getBookCount() / (float)RESULTS_PER_PAGE);
+    int maxPages = ceil((float)bookType::getBookCount() / (float)RESULTS_PER_PAGE);
     int i;
     bool exitmenu = false;
     linkedListIterator<bookType*> *pages = new linkedListIterator<bookType*>[maxPages]; // dynamic array of pages
@@ -225,7 +225,7 @@ void repRetail(orderedLinkedList<bookType*> &masterList) {
         cout << "*                                               SERENDIPITY BOOKSELLERS                                                *" << endl;
         cout << "*                                                REPORT RETAIL LISTING                                                 *" << endl;
         cout << "*                                                                                                                      *" << endl;
-        cout << "*    DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "                     CURRENT BOOK COUNT: " << bookType::getBookCount() << "                           *" << endl;
+        cout << "*       DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "                     CURRENT BOOK COUNT: " << bookType::getBookCount() << "                    *" << endl;
         cout << "*                                                                                                                      *" << endl;
         // table heading
         cout << "* " << left
@@ -276,7 +276,7 @@ void repRetail(orderedLinkedList<bookType*> &masterList) {
 
 void repCost(orderedLinkedList<bookType*> &masterList) {
     int page = 1;
-    int maxPages = round((float)bookType::getBookCount() / (float)RESULTS_PER_PAGE);
+    int maxPages = ceil((float)bookType::getBookCount() / (float)RESULTS_PER_PAGE);
     int i;
     bool exitmenu = false;
     linkedListIterator<bookType*> *pages = new linkedListIterator<bookType*>[maxPages]; // dynamic array of pages
@@ -302,7 +302,7 @@ void repCost(orderedLinkedList<bookType*> &masterList) {
         cout << "*                                               SERENDIPITY BOOKSELLERS                                                *" << endl;
         cout << "*                                                   REPORTS BY COST                                                    *" << endl;
         cout << "*                                                                                                                      *" << endl;
-        cout << "*    DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "                     CURRENT BOOK COUNT: " << bookType::getBookCount() << "                           *" << endl;
+        cout << "*       DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "                     CURRENT BOOK COUNT: " << bookType::getBookCount() << "                    *" << endl;
         cout << "*                                                                                                                      *" << endl;
         // table heading
         cout << "* " << left
@@ -354,7 +354,7 @@ void repCost(orderedLinkedList<bookType*> &masterList) {
 
 void repQty(orderedLinkedList<bookType*> &masterList) {
     int page = 1;
-    int maxPages = round((float)bookType::getBookCount() / (float)RESULTS_PER_PAGE);
+    int maxPages = ceil((float)bookType::getBookCount() / (float)RESULTS_PER_PAGE);
     int i;
     bool exitmenu = false;
     cout << left << fixed << setprecision(2);
@@ -380,7 +380,7 @@ void repQty(orderedLinkedList<bookType*> &masterList) {
         cout << "*                                               SERENDIPITY BOOKSELLERS                                                *" << endl;
         cout << "*                                                  QUANTITY LISTING                                                    *" << endl;
         cout << "*                                                                                                                      *" << endl;
-        cout << "*    DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "                     CURRENT BOOK COUNT: " << bookType::getBookCount() << "                           *" << endl;
+        cout << "*       DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "                     CURRENT BOOK COUNT: " << bookType::getBookCount() << "                     *" << endl;
         cout << "*                                                                                                                      *" << endl;
         cout << "* " << left
              << setw(repTitle) << "TITLE" << setw(repSpacing) << ' '
@@ -418,7 +418,7 @@ void repQty(orderedLinkedList<bookType*> &masterList) {
 
 void repAge(orderedLinkedList<bookType*> &masterList) {
     int page = 1;
-    int maxPages = round((float)bookType::getBookCount() / (float)RESULTS_PER_PAGE);
+    int maxPages = ceil((float)bookType::getBookCount() / (float)RESULTS_PER_PAGE);
     int i;
     bool exitmenu = false;
     cout << left << fixed << setprecision(2);
@@ -444,13 +444,13 @@ void repAge(orderedLinkedList<bookType*> &masterList) {
         cout << "*                                               SERENDIPITY BOOKSELLERS                                                *" << endl;
         cout << "*                                                REPORTS BY DATE ADDED                                                 *" << endl;
         cout << "*                                                                                                                      *" << endl;
-        cout << "*    DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "                     CURRENT BOOK COUNT: " << bookType::getBookCount() << "                           *" << endl;
+        cout << "*       DATE: " << get_date() << "          PAGE: " << page << " of " << maxPages << "                     CURRENT BOOK COUNT: " << bookType::getBookCount() << "                    *" << endl;
         cout << "*                                                                                                                      *" << endl;
         cout << "* " << left
              << setw(repTitle) << "TITLE" << setw(repSpacing) << ' '
              << setw(wIsbn) << "ISBN" << setw(repSpacing) << ' '
              << setw(wQty) << "QTY O/H" << setw(repSpacing) << ' '
-             << setw(wDate) << "DATE ADDED" << setw(repSpacing) << ' '
+             << setw(wDate) << "DATE ADDED" << setw(repSpacing-5) << ' '
              << " *" << endl;
         // lines
         cout << setfill('-');
@@ -458,8 +458,8 @@ void repAge(orderedLinkedList<bookType*> &masterList) {
              << setw(repTitle) << ' ' << setfill(' ') << setw(repSpacing) << ' ' << setfill('-')
              << setw(wIsbn) << ' ' << setfill(' ') << setw(repSpacing) << ' ' << setfill('-')
              << setw(wQty) << ' ' << setfill(' ') << setw(repSpacing) << ' ' << setfill('-')
-             << setw(wDate) << ' ' << setfill(' ') << setw(repSpacing) << ' ' << setfill('-')
-             << " *" << endl;
+             << setw(wDate) << ' ' << setfill(' ') << setw(repSpacing-5) << ' ' << setfill('-')
+             << "  *" << endl;
         cout << setfill(' ');
         // table body
         i = 0;
@@ -471,7 +471,7 @@ void repAge(orderedLinkedList<bookType*> &masterList) {
                  << setw(wQty-1) << (*iter)->getQty()<< setw(repSpacing+1) << ' '
                  << setfill(' ')
                  << left 
-                 << setw(wDate) << (*iter)->getDateAdded() << setw(repSpacing) << ' '
+                 << setw(wDate) << (*iter)->getDateAdded() << setw(repSpacing-5) << ' '
                  << " *" << endl;
             cout << "*                                                                                                                      *" << endl;
             i++;
