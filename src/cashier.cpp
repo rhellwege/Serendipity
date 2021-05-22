@@ -51,6 +51,8 @@ void cashier(orderedLinkedList<bookType*> &masterList) {
           shoppingCart[i] = 0;
      }
      do {
+          grandTotal = 0.0f;
+          grandTaxes = 0.0f;
           do {
                qtyToPurchase = 0;
                system("clear");
