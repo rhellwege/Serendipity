@@ -132,12 +132,14 @@ void repWholesale(orderedLinkedList<bookType*> &masterList) {
     int page = 1;
     int maxPages = ceil((float)bookType::getBookCount() / (float)RESULTS_PER_PAGE);
     int i;
+    float total = 0;
     bool exitmenu = false;
     linkedListIterator<bookType*> *pages = new linkedListIterator<bookType*>[maxPages]; // dynamic array of pages
     linkedListIterator<bookType*> iter ;
     i = 0;
     int j = 0;
-    for (iter = masterList.begin(); iter != masterList.end(); ++iter) { // collect pages
+    for (iter = masterList.begin(); iter != masterList.end(); ++iter) { // collect pages and get total value
+        total += (*iter)->getWholesale()*(*iter)->getQty();
         if (i % RESULTS_PER_PAGE == 0) {
             pages[j] = iter;
             j++;
@@ -184,11 +186,6 @@ void repWholesale(orderedLinkedList<bookType*> &masterList) {
             cout << "*                                                                                                                      *" << endl;
             i++;
         }
-        // display total:
-        float total = 0;
-        for (iter = masterList.begin(); iter != masterList.end(); ++iter) {
-            total += (*iter)->getWholesale() * (*iter)->getQty();
-        }
         //cout << "*                                                                                               Total: " << total << " *" << endl;
         //cout << "* " << setw((repSpacing*3)+wTitle+wIsbn+wQty-1) << right  << "Total:" << setw(wWhole+repSpacing) << total << "        *" << endl;
         cout << "* " << setw((repSpacing*3)+wTitle+wIsbn+wQty-1) << right << "Total:" << left
@@ -211,7 +208,9 @@ void repRetail(orderedLinkedList<bookType*> &masterList) {
     linkedListIterator<bookType*> iter ;
     i = 0;
     int j = 0;
+    float total = 0;
     for (iter = masterList.begin(); iter != masterList.end(); ++iter) { // collect pages
+        total += (*iter)->getRetail()*(*iter)->getQty();
         if (i % RESULTS_PER_PAGE == 0) {
             pages[j] = iter;
             j++;
@@ -257,11 +256,6 @@ void repRetail(orderedLinkedList<bookType*> &masterList) {
                  << "       *" << endl;
             cout << "*                                                                                                                      *" << endl;
             i++;
-        }
-        // display total:
-        float total = 0;
-        for (iter = masterList.begin(); iter != masterList.end(); ++iter) {
-            total += (*iter)->getRetail() * (*iter)->getQty();
         }
         //cout << "*                                    Total: " << total << "                                                                  *" << endl;
         cout << "* " << setw((repSpacing*3)+wTitle+wIsbn+wQty-1) << right << "Total:" << left
